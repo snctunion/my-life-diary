@@ -35,12 +35,13 @@
   <section id="loginScreen" class="login">
     <form id="loginForm" class="login-card">
       <div class="login-logo">✦</div><h1>MY LIFE</h1><div class="sub">나만의 일정과 기록을 한곳에</div>
-      <div class="notice" style="margin-top:18px">현재는 화면 시제품입니다. Firebase 설정 후 실제 계정 로그인과 클라우드 저장이 활성화됩니다.</div>
+      <div class="notice" style="margin-top:18px">Firebase 계정으로 로그인하거나 새 계정을 만드세요. 로그인 상태는 이 기기에 유지되며, 일정과 일기 텍스트는 계정별로 온라인 저장됩니다.</div>
       <div class="field"><label for="email">이메일</label><input id="email" type="email" autocomplete="username" placeholder="name@example.com" required></div>
       <div class="field"><label for="password">비밀번호</label><input id="password" type="password" autocomplete="current-password" placeholder="비밀번호" required minlength="6"></div>
-      <button class="btn full" type="submit">미리보기로 들어가기</button>
+      <button class="btn full" type="submit">로그인</button>
+      <button id="createAccount" class="btn secondary full" type="button" style="margin-top:10px">새 계정 만들기</button>
       <button id="showSetup" class="btn ghost full" type="button" style="margin-top:10px">Firebase 연결 안내</button>
-      <p class="sub" style="line-height:1.5">이 시제품의 로그인 버튼은 실제 인증을 수행하지 않습니다. 실제 개인 기록을 넣기 전에 Firebase 인증과 보안 규칙을 연결해야 합니다.</p>
+      <p class="sub" style="line-height:1.5">계정 생성 시 사용한 이메일과 비밀번호로 로그인하세요. 비밀번호를 잊으면 Firebase 인증에서 비밀번호 재설정 기능을 사용할 수 있습니다.</p>
     </form>
   </section>
   <div id="app" class="app hidden">
@@ -56,10 +57,10 @@
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>오늘의 기록</h2><span class="pill">다이어리</span></div>
           <div class="field"><label for="diaryText">오늘 있었던 일</label><textarea id="diaryText" placeholder="오늘의 생각이나 기억하고 싶은 일을 적어보세요."></textarea></div>
-          <div class="field"><label for="diaryPhotos">사진·파일 첨부</label><input id="diaryPhotos" type="file" accept="image/*,.pdf,.txt,.doc,.docx" multiple><small>아이폰 사진 보관함 또는 카메라를 이용해 사진을 추가할 수 있습니다. 시제품은 브라우저에 파일을 보관하며, 클라우드 동기화는 Firebase Storage 연결 후 제공됩니다.</small></div>
+          <div class="field"><label for="diaryPhotos">사진·파일 첨부</label><input id="diaryPhotos" type="file" accept="image/*,.pdf,.txt,.doc,.docx" multiple><small>아이폰 사진 보관함 또는 카메라를 이용해 사진을 추가할 수 있습니다. 현재 첨부파일은 이 브라우저에 저장되며, 다른 기기 동기화에는 파일 저장소 연결이 필요합니다.</small></div>
           <div id="diaryAttachments" class="attach-list"></div>
           <button id="saveDiary" class="btn full">오늘의 일기 저장</button>
-          <div class="sub" style="margin-top:8px">시제품에서는 텍스트와 첨부 파일이 현재 브라우저에 저장됩니다. 다른 기기와 동기화하려면 Firebase 연결이 필요합니다.</div>
+          <div class="sub" style="margin-top:8px">일기 텍스트는 Firebase에 온라인 저장됩니다. 첨부파일은 현재 이 브라우저에만 저장됩니다.</div>
         </div>
       </section>
       <section id="calendarScreen" class="screen">
@@ -79,12 +80,13 @@
           <div class="field"><label for="scanFile">카메라 촬영 또는 사진 업로드</label><input id="scanFile" type="file" accept="image/*,.pdf" capture="environment"><small>아이폰에서는 카메라 또는 사진 보관함 선택 메뉴가 표시될 수 있습니다.</small></div>
           <img id="scanPreview" class="hidden" alt="업로드 미리보기" style="width:100%;max-height:340px;object-fit:contain;border-radius:16px;background:#f6f5fa">
           <div id="scanResult" class="notice hidden" style="margin-top:12px"></div>
-          <button id="analyzeBtn" class="btn full" style="margin-top:12px">인식 준비 확인</button>
+          <button id="analyzeBtn" class="btn full" style="margin-top:12px">AI로 문서 분석</button>
+          <div class="field hidden" id="reviewWrap"><label for="reviewText">AI 분석 결과 (저장 전 확인·수정)</label><textarea id="reviewText" rows="10" spellcheck="false"></textarea><small>AI가 추출한 값은 틀릴 수 있습니다. 약 복용량, 검사일, 금액 등은 원본 문서와 대조하세요.</small></div>
           <p class="sub" style="line-height:1.5;margin-top:10px">AI 분석은 서버 측 API 연결이 필요합니다. 약 복용량과 검사일 등 중요한 값은 인식 후 반드시 원문과 대조하고 확정하도록 구현합니다.</p>
         </div>
       </section>
       <section id="searchScreen" class="screen">
-        <div class="card"><h2 style="margin-top:0">기록 검색</h2><div class="field"><label for="searchInput">일정·일기 검색</label><input id="searchInput" placeholder="검색어 입력"></div><div id="searchResults" class="stack"></div><div class="sub">시제품에 입력한 일정과 일기를 검색합니다.</div></div>
+        <div class="card"><h2 style="margin-top:0">기록 검색</h2><div class="field"><label for="searchInput">일정·일기 검색</label><input id="searchInput" placeholder="검색어 입력"></div><div id="searchResults" class="stack"></div><div class="sub">저장된 일정과 일기에서 검색합니다.</div></div>
       </section>
       <section id="menuScreen" class="screen">
         <div class="card"><h2 style="margin-top:0">전체 메뉴</h2><div class="quick-grid">
@@ -122,7 +124,28 @@
     </div>
   </div>
   <div id="infoModal" class="modal" role="dialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2 id="infoTitle">안내</h2><button class="close" id="closeInfo">×</button></div><div id="infoBody" style="line-height:1.7;margin:16px 0"></div><button class="btn full" id="infoOk">확인</button></div></div>
-<script>
+<script>window.MY_LIFE_AI_API_URL = "https://YOUR-WORKER.workers.dev";</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB59GwxK-Wvw1-rLa7Jcw4sN1R7nbQGlbI",
+  authDomain: "my-life-diary-54da4.firebaseapp.com",
+  projectId: "my-life-diary-54da4",
+  storageBucket: "my-life-diary-54da4.firebasestorage.app",
+  messagingSenderId: "379235122051",
+  appId: "1:379235122051:web:4d458a30ebd2062dc194b6"
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+// Keep the Firebase login on this browser until the user explicitly logs out.
+const authPersistenceReady = setPersistence(auth, browserLocalPersistence);
+const db = getFirestore(firebaseApp);
+let activeUser = null;
+let diaryCache = {};
+let cloudReady = false;
 (() => {
   const $ = id => document.getElementById(id);
   const today = new Date();
@@ -130,9 +153,9 @@
   const parseDate = s => {const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)};
   const fmt = d => new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}).format(d);
   let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], currentScreen='home';
-  try { events = JSON.parse(localStorage.getItem('mylife.events')||'[]'); } catch {}
   const diaryKey = d => 'mylife.diary.'+d;
-  function saveEvents(){localStorage.setItem('mylife.events',JSON.stringify(events));renderAll();}
+  async function saveEvents(){if(!activeUser){info('로그인이 필요합니다','먼저 Firebase 계정으로 로그인해 주세요.');return;}try{await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});renderAll();}catch(err){console.error(err);info('저장 실패','일정을 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}}
+  async function loadCloudData(user){activeUser=user;events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
   function occurrences(e, start, end){
     const out=[]; const from=parseDate(start), to=parseDate(end), base=parseDate(e.date);
     if(e.repeat==='none'||!e.repeat){if(base>=from&&base<=to)out.push({...e,occurrence:dateKey(base)});return out;}
@@ -167,9 +190,12 @@
   function openEvent(){ $('eventDate').value=selectedDate||dateKey(today);$('eventForm').reset();$('eventDate').value=selectedDate||dateKey(today);$('eventModal').classList.add('open');setTimeout(()=>$('eventName').focus(),100);}
   function closeEvent(){$('eventModal').classList.remove('open');}
   function info(title,body){$('infoTitle').textContent=title;$('infoBody').innerHTML=body;$('infoModal').classList.add('open');}
-  $('loginForm').addEventListener('submit',e=>{e.preventDefault();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderAll();});
-  $('logout').addEventListener('click',()=>{ $('app').classList.add('hidden');$('loginScreen').classList.remove('hidden'); });
-  $('showSetup').addEventListener('click',()=>info('Firebase 연결 안내','실제 로그인을 활성화하려면 Firebase 프로젝트 생성 후 Authentication에서 이메일/비밀번호 로그인을 켜고, Firestore 및 Storage 보안 규칙을 설정해야 합니다. 현재 화면은 미리보기 전용이며 실제 인증을 하지 않습니다.'));
+  $('loginForm').addEventListener('submit',async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);}catch(err){console.error(err);info('로그인 실패',authError(err));}});
+  $('createAccount').addEventListener('click',async()=>{const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<6){info('입력 확인','이메일을 입력하고 비밀번호는 6자 이상 입력해 주세요.');return;}try{await createUserWithEmailAndPassword(auth,email,password);info('계정 생성 완료','계정이 만들어졌습니다. 로그인 후 사용할 수 있습니다.');}catch(err){console.error(err);info('계정 생성 실패',authError(err));}});
+  $('logout').addEventListener('click',async()=>{try{await signOut(auth);}catch(err){console.error(err);}});
+  $('showSetup').addEventListener('click',()=>info('Firebase 연결 상태','이 화면은 Firebase Authentication과 Cloud Firestore를 사용합니다. 일정과 일기 텍스트는 로그인한 계정별로 저장됩니다. 현재 Storage는 요금제 확인이 필요해 첨부파일은 이 브라우저에만 저장됩니다.'));
+  function authError(err){const m=err?.code||'';return ({'auth/invalid-credential':'이메일 또는 비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 가입된 이메일입니다. 로그인해 주세요.','auth/weak-password':'비밀번호는 6자 이상이어야 합니다.','auth/invalid-email':'이메일 형식이 올바르지 않습니다.','auth/operation-not-allowed':'Firebase Authentication에서 이메일/비밀번호 로그인을 켜야 합니다.','auth/network-request-failed':'인터넷 연결을 확인해 주세요.'})[m]||('오류 코드: '+(m||'알 수 없는 오류'));}
+  authPersistenceReady.then(()=>{onAuthStateChanged(auth,user=>{if(user){loadCloudData(user);}else{activeUser=null;cloudReady=false;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');}});}).catch(err=>{console.error('Auth persistence setup failed',err);info('로그인 유지 설정 오류','브라우저의 쿠키/사이트 데이터 설정을 확인해 주세요. 일반 창에서 다시 시도해 주세요.');});
   document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
   document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='new-event'){openEvent();return;}if(a==='scan'){showScreen('scan');return;}if(a==='diary'){showScreen('home');$('diaryText').focus();return;}const messages={files:'사진·파일 보관 화면은 Firebase Storage 연동 단계에서 구현합니다.',meds:'투약 관리 폼과 약 봉투 AI 인식 결과 연결을 다음 단계에서 구현합니다.',cars:'차량 정보·정비·검사 기록 폼을 다음 단계에서 구현합니다.',holidays:'대한민국 공휴일은 공식 공휴일 데이터 연동 후 자동 표시합니다.',settings:'계정 설정과 개인정보 관련 기능은 Firebase 인증 연결 후 구현합니다.'};info('기능 안내',messages[a]||'이 기능은 다음 개발 단계에서 연결합니다.');}));
   $('eventForm').addEventListener('submit',e=>{e.preventDefault();events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date:$('eventDate').value,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=$('eventDate').value;saveEvents();closeEvent();showScreen('calendar');});
@@ -179,17 +205,34 @@
   $('calendar').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selectedDate=b.dataset.day;const d=parseDate(selectedDate);monthDate=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();});
   document.addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const id=b.dataset.delete;if(confirm('이 반복 일정 전체를 삭제할까요?')){events=events.filter(x=>x.id!==id);saveEvents();}});
   let pendingDiaryAttachments=[];
-  function readDiary(day){try{return JSON.parse(localStorage.getItem(diaryKey(day))||'{}')}catch{return {text:localStorage.getItem(diaryKey(day))||'',attachments:[]}}}
+  function readDiary(day){const cloud=diaryCache[day]||{};let local={};try{local=JSON.parse(localStorage.getItem(diaryKey(day))||'{}')}catch{}return {text:cloud.text??local.text??'',attachments:local.attachments||[]};}
   function renderDiaryAttachments(items){$('diaryAttachments').innerHTML=(items||[]).map((a,i)=>`<div class="attach-item">${a.data&&a.type&&a.type.startsWith('image/')?`<img src="${a.data}" alt="${esc(a.name)}">`:`<div style="height:70px;display:grid;place-items:center;font-size:26px">📎</div>`}<div class="file-name">${esc(a.name)}</div><button type="button" data-remove-attachment="${i}" aria-label="첨부 삭제">×</button></div>`).join('');}
-  $('diaryPhotos').addEventListener('change',async e=>{const files=[...(e.target.files||[])];for(const f of files){if(f.size>2*1024*1024){info('파일 크기 안내',`${esc(f.name)} 파일은 2MB를 초과합니다. 현재 시제품에서는 작은 파일로 테스트해 주세요. Firebase Storage 연결 후 대용량 파일을 지원하도록 확장합니다.`);continue;}const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f)});pendingDiaryAttachments.push({name:f.name,type:f.type,data});}renderDiaryAttachments(pendingDiaryAttachments);e.target.value='';});
+  $('diaryPhotos').addEventListener('change',async e=>{const files=[...(e.target.files||[])];for(const f of files){if(f.size>2*1024*1024){info('파일 크기 안내',`${esc(f.name)} 파일은 2MB를 초과합니다. 현재 첨부파일은 2MB 이하만 지원합니다. 큰 파일은 파일 저장소 연결 후 사용할 수 있습니다.`);continue;}const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f)});pendingDiaryAttachments.push({name:f.name,type:f.type,data});}renderDiaryAttachments(pendingDiaryAttachments);e.target.value='';});
   $('diaryAttachments').addEventListener('click',e=>{const b=e.target.closest('[data-remove-attachment]');if(!b)return;pendingDiaryAttachments.splice(Number(b.dataset.removeAttachment),1);renderDiaryAttachments(pendingDiaryAttachments);});
-  $('saveDiary').addEventListener('click',()=>{try{localStorage.setItem(diaryKey(dateKey(today)),JSON.stringify({text:$('diaryText').value,attachments:pendingDiaryAttachments}));info('저장 완료','오늘의 일기와 첨부 파일을 이 브라우저에 저장했습니다. 다른 기기와 동기화하려면 Firebase 연결이 필요합니다.');}catch(err){info('저장 공간 부족','브라우저 저장 공간이 부족합니다. 첨부 사진 수를 줄이거나 Firebase Storage를 연결해 주세요.');}});
+  $('saveDiary').addEventListener('click',async()=>{if(!activeUser){info('로그인이 필요합니다','먼저 로그인해 주세요.');return;}const day=dateKey(today);try{await setDoc(doc(db,'users',activeUser.uid,'diary',day),{text:$('diaryText').value,updatedAt:new Date().toISOString()},{merge:true});diaryCache[day]={...(diaryCache[day]||{}),text:$('diaryText').value};try{localStorage.setItem(diaryKey(day),JSON.stringify({text:$('diaryText').value,attachments:pendingDiaryAttachments}));}catch{}info('저장 완료','일기 내용은 Firebase에 온라인 저장했습니다. 첨부파일은 현재 이 브라우저에만 저장되므로 다른 기기에서는 보이지 않습니다.');}catch(err){console.error(err);info('저장 실패','일기를 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}});
   
   $('searchInput').addEventListener('input',renderSearch);
   function renderSearch(){const q=$('searchInput').value.trim().toLowerCase();const found=events.filter(e=>!q||(e.title+' '+e.notes+' '+e.category).toLowerCase().includes(q));$('searchResults').innerHTML=found.length?found.map(e=>`<div class="event"><div class="grow"><strong>${esc(e.title)}</strong><small>${esc(e.date)} · ${esc(e.category)}</small></div><button class="btn ghost" data-goto="${esc(e.date)}">보기</button></div>`).join(''):'<div class="empty">검색 결과가 없습니다.</div>';}
   $('searchResults').addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(!b)return;selectedDate=b.dataset.goto;monthDate=parseDate(selectedDate);showScreen('calendar');});
   $('scanFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const img=$('scanPreview');if(f.type.startsWith('image/')){img.src=URL.createObjectURL(f);img.classList.remove('hidden');}else img.classList.add('hidden');$('scanResult').textContent=`선택한 파일: ${f.name} · ${(f.size/1024/1024).toFixed(2)} MB. AI 분석 API 연결 후 문서 내용을 추출할 수 있습니다.`;$('scanResult').classList.remove('hidden');});
-  $('analyzeBtn').addEventListener('click',()=>{if(!$('scanFile').files?.length){info('파일을 선택해 주세요','카메라로 촬영하거나 사진첩에서 문서 이미지를 선택해 주세요.');return;}info('AI 인식 연결 예정','파일 업로드와 미리보기는 준비되어 있습니다. 실제 OCR/AI 분석 및 Firebase 저장은 서버 측 API와 보안 설정을 연결한 다음 활성화됩니다.');});
+  $('analyzeBtn').addEventListener('click',async()=>{
+    const file=$('scanFile').files?.[0];
+    if(!file){info('파일을 선택해 주세요','카메라로 촬영하거나 사진첩에서 문서 이미지를 선택해 주세요.');return;}
+    if(!file.type.startsWith('image/')){info('이미지 파일 필요','현재 AI 분석 API는 사진 이미지(JPG, PNG, WEBP)를 지원합니다. PDF는 사진으로 변환한 뒤 올려 주세요.');return;}
+    if(file.size>8*1024*1024){info('파일 크기 초과','AI 분석은 8MB 이하 이미지로 시도해 주세요.');return;}
+    const apiBase=window.MY_LIFE_AI_API_URL||'';
+    if(!apiBase||apiBase.includes('YOUR-WORKER')){info('AI 서버 주소 설정 필요','AI API 서버를 배포한 뒤 index.html의 MY_LIFE_AI_API_URL 값에 실제 Worker 주소를 넣어야 합니다. 안내 파일의 AI 서버 설정 단계를 따라 주세요.');return;}
+    const btn=$('analyzeBtn');btn.disabled=true;btn.textContent='AI 분석 중…';$('reviewWrap').classList.add('hidden');
+    try{
+      const idToken=await activeUser.getIdToken();
+      const dataUrl=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
+      const response=await fetch(apiBase.replace(/\/$/,'')+'/analyze',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+idToken},body:JSON.stringify({imageDataUrl:dataUrl,documentType:$('docType').value})});
+      const payload=await response.json().catch(()=>({error:'서버 응답을 읽을 수 없습니다.'}));
+      if(!response.ok)throw new Error(payload.error||('서버 오류 '+response.status));
+      $('reviewText').value=JSON.stringify(payload.extracted||payload,null,2);$('reviewWrap').classList.remove('hidden');$('scanResult').textContent='분석이 완료되었습니다. 아래 결과를 원본과 대조하고 필요한 부분을 수정하세요. 현재 결과는 아직 자동 저장되지 않았습니다.';$('scanResult').classList.remove('hidden');
+    }catch(err){console.error(err);info('AI 분석 실패',esc(err.message||'서버 연결에 실패했습니다.')+'<br><br>AI 서버 주소, API 키 설정, 로그인 상태 및 인터넷 연결을 확인해 주세요.');}
+    finally{btn.disabled=false;btn.textContent='AI로 문서 분석';}
+  });
   $('closeInfo').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoOk').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoModal').addEventListener('click',e=>{if(e.target===$('infoModal'))$('infoModal').classList.remove('open');});
   renderAll();
 })();
