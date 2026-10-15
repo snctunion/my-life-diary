@@ -69,7 +69,7 @@
           <div class="monthbar"><button id="prevMonth" aria-label="이전 달">‹</button><h2 id="monthTitle"></h2><button id="nextMonth" aria-label="다음 달">›</button></div>
           <div id="calendar" class="calendar-grid"></div>
           <div class="category-legend" aria-label="분류별 색상 안내"><span><i class="dot personal"></i>개인</span><span><i class="dot work"></i>업무</span><span><i class="dot union"></i>조합</span><span><i class="dot anniversary"></i>기념일</span><span><i class="dot medication"></i>투약</span><span><i class="dot vehicle"></i>차량</span><span><i class="dot health"></i>건강</span><span><i class="dot family"></i>가족</span><span><i class="dot other"></i>기타</span></div>
-          <div class="sub" style="margin-top:12px">날짜 아래 점과 일정 아이콘에 분류별 고유색을 표시합니다. 같은 분류의 일정이 여러 개여도 날짜 아래에는 해당 분류 점이 하나만 표시됩니다. 대한민국 공휴일은 무료 공휴일 API에서 불러옵니다. 인터넷 연결이 필요합니다.</div>
+          <div class="sub" style="margin-top:12px">날짜 아래 점과 일정 아이콘에 분류별 고유색을 표시합니다. 같은 분류의 일정이 여러 개여도 날짜 아래에는 해당 분류 점이 하나만 표시됩니다. 공휴일 연동은 공식 공휴일 데이터 연결 단계에서 활성화합니다.</div>
         </div>
         <div class="card" style="margin-top:16px"><div class="section-head"><h2 id="selectedTitle">선택한 날짜</h2><button class="btn secondary" data-action="new-event">＋ 추가</button></div><div id="selectedEvents" class="stack"></div></div>
       </section>
@@ -78,7 +78,7 @@
           <div class="section-head"><h2>카메라 문자 인식</h2><span class="pill">무료 OCR</span></div>
           <p class="sub" style="line-height:1.6">사진 속 글자를 브라우저에서 인식합니다. 별도의 유료 AI API는 사용하지 않습니다. 인식한 글자를 확인한 뒤 약 정보를 직접 정리할 수 있습니다.</p>
           <div class="field"><label for="docType">문서 종류</label><select id="docType"><option value="medicine">약 봉투 / 처방전</option><option value="vehicle">차량 정비 내역</option><option value="inspection">자동차 검사 용지</option><option value="event">일정 / 예약 안내문</option><option value="file">그 외 문서</option></select></div>
-          <div class="field"><label for="scanFile">카메라 촬영 또는 사진 업로드</label><input id="scanFile" type="file" accept="image/*" capture="environment"><small>아이폰에서는 카메라 또는 사진 보관함 선택 메뉴가 표시될 수 있습니다.</small></div>
+          <div class="field"><label for="scanFile">카메라 촬영 또는 사진 업로드</label><input id="scanFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" capture="environment"><small>아이폰에서는 카메라 또는 사진 보관함 선택 메뉴가 표시될 수 있습니다.</small></div>
           <img id="scanPreview" class="hidden" alt="업로드 미리보기" style="width:100%;max-height:340px;object-fit:contain;border-radius:16px;background:#F2F6F3">
           <div id="scanResult" class="notice hidden" style="margin-top:12px"></div>
           <button id="analyzeBtn" class="btn full" style="margin-top:12px">사진 글자 인식하기</button>
@@ -109,25 +109,8 @@
           <button class="quick" data-action="meds"><span class="emoji">💊</span><b>투약 관리</b><small>약품·복용 기록</small></button>
           <button class="quick" data-action="cars"><span class="emoji">🚘</span><b>차량 관리</b><small>정비·검사·보험</small></button>
           <button class="quick" data-action="holidays"><span class="emoji">🇰🇷</span><b>대한민국 공휴일</b><small>공식 데이터 연동 예정</small></button>
-          <button class="quick" data-action="settings"><span class="emoji">⚙️</span><b>설정</b><small>Firebase 상태·계정·공휴일</small></button>
+          <button class="quick" data-action="settings"><span class="emoji">⚙️</span><b>설정</b><small>계정·앱 설정</small></button>
         </div></div>
-      </section>
-      <section id="settingsScreen" class="screen">
-        <div class="card">
-          <h2 style="margin-top:0">앱 설정</h2>
-          <p class="sub">로그인 계정, 온라인 저장 연결, 공휴일 데이터를 확인하고 관리합니다.</p>
-          <div class="notice" id="firebaseStatus">Firebase 연결 상태를 확인하는 중입니다.</div>
-          <div class="field"><label>현재 로그인 이메일</label><input id="settingsEmail" readonly value="로그인 정보 확인 중"></div>
-          <button id="settingsAccount" class="btn secondary full" type="button">이메일·비밀번호 변경</button>
-          <button id="settingsLogout" class="btn ghost full" type="button" style="margin-top:8px">로그아웃</button>
-          <div style="height:1px;background:var(--line);margin:20px 0"></div>
-          <h3>대한민국 공휴일</h3>
-          <p class="sub">무료 공휴일 API를 이용합니다. 공휴일을 달력에 표시하며 별도 API 키나 유료 AI 기능은 필요하지 않습니다.</p>
-          <div class="notice" id="holidayStatus">공휴일 데이터가 아직 불러와지지 않았습니다.</div>
-          <button id="refreshHolidays" class="btn full" type="button" style="margin-top:10px">공휴일 다시 불러오기</button>
-          <button id="settingsCalendar" class="btn secondary full" type="button" style="margin-top:8px">달력으로 돌아가기</button>
-          <p class="sub" style="margin-top:16px">사진·파일을 다른 기기와 동기화하는 기능은 Firebase Storage 요금제 확인이 필요해 아직 활성화하지 않았습니다.</p>
-        </div>
       </section>
     </main>
     <nav class="bottom" aria-label="주요 메뉴">
@@ -180,24 +163,10 @@ let cloudReady = false;
   const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const parseDate = s => {const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)};
   const fmt = d => new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}).format(d);
-  let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], holidays = [], holidayYears = new Set(), currentScreen='home';
-  $('medicineDate').value=dateKey(today);
+  let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], currentScreen='home';
   const diaryKey = d => 'mylife.diary.'+d;
   async function saveEvents(){if(!activeUser){info('로그인이 필요합니다','먼저 Firebase 계정으로 로그인해 주세요.');return;}try{await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});renderAll();}catch(err){console.error(err);info('저장 실패','일정을 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}}
-  async function loadHolidays(year,force=false){
-    const status=$('holidayStatus');if(status)status.textContent=`${year}년 공휴일 데이터를 불러오는 중입니다…`;
-    if(!force&&holidayYears.has(year)){if(status)status.textContent=`공휴일 데이터 연결 완료 · ${year}년`;return;}
-    try{
-      let response=await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/KR`,{cache:force?'no-store':'default'});
-      if(!response.ok)throw new Error(`공휴일 서버 응답 오류 (${response.status})`);
-      const data=await response.json();if(!Array.isArray(data))throw new Error('공휴일 데이터 형식이 올바르지 않습니다.');
-      holidays=holidays.filter(h=>!h.date.startsWith(String(year)+'-'));
-      for(const h of data){if(!h.date)continue;holidays.push({id:'holiday-'+h.date+'-'+(h.localName||h.name||''),date:h.date,title:h.localName||h.name||'공휴일',category:'공휴일',notes:'대한민국 공휴일',source:'holiday',repeat:'none'});}
-      holidayYears.add(year);if(status)status.textContent=`연동 완료 · ${year}년 공휴일 ${data.length}건을 불러왔습니다.`;
-      renderAll();
-    }catch(err){console.error('Holiday API error:',err);if(status)status.textContent='공휴일 데이터를 불러오지 못했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.';throw err;}
-  }
-  async function loadCloudData(user){activeUser=user;events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');$('settingsEmail').value=user.email||'이메일 정보 없음';$('firebaseStatus').textContent='Firebase 로그인 연결 완료 · Firestore 데이터 읽기 완료';renderMedicines();loadHolidays(monthDate.getFullYear()).catch(()=>{});}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
+  async function loadCloudData(user){activeUser=user;events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderMedicines();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
   function occurrences(e, start, end){
     const out=[]; const from=parseDate(start), to=parseDate(end), base=parseDate(e.date);
     if(e.repeat==='none'||!e.repeat){if(base>=from&&base<=to)out.push({...e,occurrence:dateKey(base)});return out;}
@@ -211,12 +180,12 @@ let cloudReady = false;
       else break;
     }return out;
   }
-  function getForDate(day){const from=day,to=day;const personal=events.flatMap(e=>occurrences(e,from,to));const publicDays=holidays.filter(h=>h.date===day).map(h=>({...h,occurrence:h.date}));return [...personal,...publicDays].sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
+  function getForDate(day){const from=day,to=day;return events.flatMap(e=>occurrences(e,from,to)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
   const CATEGORY_CLASSES={'개인':'personal','업무':'work','조합':'union','기념일':'anniversary','투약':'medication','차량':'vehicle','건강':'health','가족':'family','기타':'other','공휴일':'holiday'};
   const CATEGORY_COLORS={'개인':'#25855A','업무':'#3478D4','조합':'#D97726','기념일':'#C23B8A','투약':'#7651B5','차량':'#64748B','건강':'#D9485F','가족':'#0F8B8D','기타':'#5B6470','공휴일':'#B42318'};
   function categoryClass(c){return CATEGORY_CLASSES[c]||'other'}
   function categoryColor(c){return CATEGORY_COLORS[c]||CATEGORY_COLORS['기타']}
-  function eventMarkup(e){const c=e.category||'개인',emoji=({'개인':'👤','업무':'💼','조합':'🤝','투약':'💊','차량':'🚘','건강':'🩺','기념일':'🎉','가족':'🏡','공휴일':'🇰🇷'})[c]||'🗓️',color=categoryColor(c);return `<div class="event"><div class="iconbox" style="background:${color}18;color:${color}">${emoji}</div><div class="grow"><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time)+' · ':''}${esc(c)}${e.repeat&&e.repeat!=='none'?' · '+repeatName(e.repeat):''}${e.notes?' · '+esc(e.notes):''}</small></div>${(e.source==='holiday'||e.source==='medication')?'':'<button class="btn ghost" data-delete="'+esc(e.id)+'" aria-label="일정 삭제">삭제</button>'}</div>`}
+  function eventMarkup(e){const c=e.category||'개인',emoji=({'개인':'👤','업무':'💼','조합':'🤝','투약':'💊','차량':'🚘','건강':'🩺','기념일':'🎉','가족':'🏡'})[c]||'🗓️',color=categoryColor(c);return `<div class="event"><div class="iconbox" style="background:${color}18;color:${color}">${emoji}</div><div class="grow"><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time)+' · ':''}${esc(c)}${e.repeat&&e.repeat!=='none'?' · '+repeatName(e.repeat):''}${e.notes?' · '+esc(e.notes):''}</small></div><button class="btn ghost" data-delete="${esc(e.id)}" aria-label="일정 삭제">삭제</button></div>`}
   function repeatName(r){return ({daily:'매일',weekly:'매주',monthly:'매월',yearly:'매년',custom:'사용자 지정'})[r]||''}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function renderToday(){ $('todayDate').textContent=fmt(today); $('greeting').textContent='오늘의 다이어리';const list=getForDate(dateKey(today));$('todayEvents').innerHTML=list.length?list.map(eventMarkup).join(''):'<div class="empty">오늘 등록된 일정이 없습니다.<br>＋ 일정 추가로 첫 일정을 등록해 보세요.</div>'; const saved=readDiary(dateKey(today));$('diaryText').value=saved.text||'';renderDiaryAttachments(saved.attachments||[]);}
@@ -228,7 +197,7 @@ let cloudReady = false;
     $('calendar').innerHTML=h; $('selectedTitle').textContent=fmt(parseDate(selectedDate)); const list=getForDate(selectedDate);$('selectedEvents').innerHTML=list.length?list.map(eventMarkup).join(''):'<div class="empty">선택한 날짜에 등록된 일정이 없습니다.</div>';
   }
   function renderAll(){renderToday();renderCalendar();if(currentScreen==='search')renderSearch();}
-  function showScreen(name){currentScreen=name;document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(''+name+'Screen').classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='calendar')renderCalendar();if(name==='settings'){$('settingsEmail').value=auth.currentUser?.email||'로그인 정보 없음';$('firebaseStatus').textContent=cloudReady?'Firebase 로그인 연결 완료 · Firestore 데이터 읽기 완료':'Firebase 데이터 연결 상태를 확인할 수 없습니다.';loadHolidays(monthDate.getFullYear()).catch(()=>{});}window.scrollTo({top:0,behavior:'smooth'});}
+  function showScreen(name){currentScreen=name;document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(''+name+'Screen').classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='calendar')renderCalendar();window.scrollTo({top:0,behavior:'smooth'});}
   function openEvent(){ $('eventDate').value=selectedDate||dateKey(today);$('eventForm').reset();$('eventDate').value=selectedDate||dateKey(today);$('eventModal').classList.add('open');setTimeout(()=>$('eventName').focus(),100);}
   function closeEvent(){$('eventModal').classList.remove('open');}
   function info(title,body){$('infoTitle').textContent=title;$('infoBody').innerHTML=body;$('infoModal').classList.add('open');}
@@ -259,11 +228,11 @@ let cloudReady = false;
   function authError(err){const m=err?.code||'';return ({'auth/invalid-credential':'이메일 또는 비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 가입된 이메일입니다. 로그인해 주세요.','auth/weak-password':'비밀번호는 6자 이상이어야 합니다.','auth/invalid-email':'이메일 형식이 올바르지 않습니다.','auth/operation-not-allowed':'Firebase Authentication에서 이메일/비밀번호 로그인을 켜야 합니다.','auth/network-request-failed':'인터넷 연결을 확인해 주세요.','auth/wrong-password':'비밀번호가 올바르지 않습니다.','auth/too-many-requests':'시도 횟수가 많습니다. 잠시 후 다시 시도해 주세요.'})[m]||('오류 코드: '+(m||'알 수 없는 오류'));}
   authPersistenceReady.then(()=>{onAuthStateChanged(auth,user=>{if(user){loadCloudData(user);}else{activeUser=null;cloudReady=false;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');}});}).catch(err=>{console.error('Auth persistence setup failed',err);info('로그인 유지 설정 오류','브라우저의 쿠키/사이트 데이터 설정을 확인해 주세요. 일반 창에서 다시 시도해 주세요.');});
   document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
-  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='new-event'){openEvent();return;}if(a==='scan'){showScreen('scan');return;}if(a==='diary'){showScreen('home');$('diaryText').focus();return;}if(a==='settings'){showScreen('settings');return;}if(a==='holidays'){loadHolidays(monthDate.getFullYear(),true).then(()=>showScreen('calendar')).catch(()=>info('공휴일 연동 실패','인터넷 연결을 확인한 뒤 전체 메뉴 → 설정에서 다시 시도해 주세요.'));return;}if(a==='meds'){showScreen('scan');setTimeout(()=>$('medicationsList').scrollIntoView({behavior:'smooth',block:'start'}),100);renderMedicines();return;}const messages={files:'사진·파일을 여러 기기에서 동기화하려면 Firebase Storage 연결과 요금제 확인이 필요합니다. 현재는 브라우저 내 첨부만 지원합니다.',cars:'차량 관리 화면은 아직 실제 데이터 저장 기능이 구현되지 않았습니다.'};info('기능 안내',messages[a]||'이 기능은 아직 연결되지 않았습니다.');}));
+  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='new-event'){openEvent();return;}if(a==='scan'){showScreen('scan');return;}if(a==='diary'){showScreen('home');$('diaryText').focus();return;}const messages={files:'사진·파일 보관 화면은 Firebase Storage 연동 단계에서 구현합니다.',meds:'카메라 OCR 메뉴에서 약 봉투 사진의 글자를 무료로 인식하고 약 정보를 정리할 수 있습니다.',cars:'차량 정보·정비·검사 기록 폼을 다음 단계에서 구현합니다.',holidays:'대한민국 공휴일은 공식 공휴일 데이터 연동 후 자동 표시합니다.',settings:'계정 설정과 개인정보 관련 기능은 Firebase 인증 연결 후 구현합니다.'};info('기능 안내',messages[a]||'이 기능은 다음 개발 단계에서 연결합니다.');}));
   $('eventForm').addEventListener('submit',e=>{e.preventDefault();events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date:$('eventDate').value,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=$('eventDate').value;saveEvents();closeEvent();showScreen('calendar');});
   $('closeModal').addEventListener('click',closeEvent);$('eventModal').addEventListener('click',e=>{if(e.target===$('eventModal'))closeEvent();});
-  $('prevMonth').addEventListener('click',()=>{const oldYear=monthDate.getFullYear();monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()-1,1);renderCalendar();if(monthDate.getFullYear()!==oldYear)loadHolidays(monthDate.getFullYear()).catch(()=>{});});
-  $('nextMonth').addEventListener('click',()=>{const oldYear=monthDate.getFullYear();monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()+1,1);renderCalendar();if(monthDate.getFullYear()!==oldYear)loadHolidays(monthDate.getFullYear()).catch(()=>{});});
+  $('prevMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()-1,1);renderCalendar();});
+  $('nextMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()+1,1);renderCalendar();});
   $('calendar').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selectedDate=b.dataset.day;const d=parseDate(selectedDate);monthDate=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();});
   document.addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const id=b.dataset.delete;if(confirm('이 반복 일정 전체를 삭제할까요?')){events=events.filter(x=>x.id!==id);saveEvents();}});
   let pendingDiaryAttachments=[];
@@ -284,68 +253,48 @@ let cloudReady = false;
     if(file.size>12*1024*1024){info('파일 크기 초과','12MB 이하의 사진을 사용해 주세요.');return;}
     const btn=$('analyzeBtn');btn.disabled=true;btn.textContent='글자 인식 준비 중…';$('reviewWrap').classList.add('hidden');
     try{
-      // Tesseract.js runs OCR locally in the browser; no paid AI API is used.
-      let mod;
-      try{mod=await import('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js');}
-      catch(firstError){console.warn('jsDelivr OCR module failed; trying unpkg',firstError);mod=await import('https://unpkg.com/tesseract.js@5/dist/tesseract.esm.min.js');}
-      if(typeof mod.createWorker!=='function')throw new Error('OCR 모듈은 열렸지만 글자인식 엔진을 시작하지 못했습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.');
-      btn.textContent='한국어 인식 데이터 다운로드 중…';
-      let worker;
-      try{
-        worker=await mod.createWorker('kor+eng',1,{
-          workerPath:'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js',
-          corePath:'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.0.0/tesseract-core-simd-lstm.wasm.js',
-          langPath:'https://tessdata.projectnaptha.com/4.0.0',
-          gzip:true,
-          logger:m=>{if(m.status==='recognizing text')btn.textContent=`글자 인식 중… ${Math.round((m.progress||0)*100)}%`;else if(m.status)btn.textContent=`인식 준비 중… ${m.status}`;}
-        });
-        const result=await worker.recognize(file);
-        const textOut=(result.data?.text||'').trim();
-        if(!textOut)throw new Error('사진은 처리했지만 글자를 찾지 못했습니다. 더 밝고 선명하게 다시 촬영해 주세요.');
-        $('reviewText').value=textOut;$('reviewWrap').classList.remove('hidden');
-        $('scanResult').textContent='글자 인식이 완료되었습니다. 아래 인식 결과를 확인한 뒤 약 이름·효능·복용법·투약 일정을 직접 정리해 저장하세요.';$('scanResult').classList.remove('hidden');
-        const firstLine=textOut.split(/\n+/).map(x=>x.trim()).find(x=>x.length>=2);
-        if(firstLine&&!$('medicineName').value.trim()&&$('docType').value==='medicine')$('medicineName').value=firstLine.slice(0,100);
-      }finally{if(worker){try{await worker.terminate();}catch(cleanupError){console.warn('OCR worker cleanup failed',cleanupError);}}}
-      /* result review and medication form are populated above */
-    }catch(err){console.error('OCR failed:',err);const detail=err?.message||String(err)||'알 수 없는 오류';$('scanResult').textContent='인식 실패: '+detail;$('scanResult').classList.remove('hidden');info('글자 인식 실패',esc(detail)+'<br><br>해결 순서: 1) 인터넷 연결 확인 2) 페이지에서 Ctrl+F5 3) JPG/PNG 사진으로 재시도. 계속 실패하면 브라우저에서 F12 → Console에 표시되는 첫 번째 빨간 오류 문구를 보내 주세요.');}
+      // Tesseract.js performs OCR in the browser; no paid AI API key is used.
+      const mod=await import('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.esm.min.js');
+      const createWorker = mod.createWorker || mod.default?.createWorker;
+      if (typeof createWorker !== 'function') throw new Error('Tesseract.js 작업자 함수를 불러오지 못했습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.');
+      const worker = await createWorker('kor+eng', 1, {
+        workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js',
+        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+        gzip: true,
+        logger: m => {
+          if (m.status === 'recognizing text') btn.textContent = `글자 인식 중… ${Math.round((m.progress || 0) * 100)}%`;
+          else if (m.status) btn.textContent = `인식 준비 중… ${m.status}`;
+        }
+      });
+      let result;
+      try { result = await worker.recognize(file); }
+      finally { await worker.terminate(); }
+      const textOut=(result.data?.text||'').trim();
+      if(!textOut)throw new Error('글자를 읽지 못했습니다. 사진을 밝게 찍고 글자가 선명하게 보이도록 다시 시도해 주세요.');
+      $('reviewText').value=textOut;$('reviewWrap').classList.remove('hidden');
+      $('scanResult').textContent='글자 인식이 완료되었습니다. 아래 인식 결과를 확인한 뒤 약 이름·효능·복용법·투약 일정을 직접 정리해 저장하세요.';$('scanResult').classList.remove('hidden');
+      const firstLine=textOut.split(/\n+/).map(x=>x.trim()).find(x=>x.length>=2);
+      if(firstLine&&!$('medicineName').value.trim()&&$('docType').value==='medicine')$('medicineName').value=firstLine.slice(0,100);
+    }catch(err){console.error(err);info('글자 인식 실패',esc(err.message||'OCR 라이브러리 또는 언어 데이터를 불러오지 못했습니다.')+'<br><br>인터넷 연결을 확인하고 글자가 선명한 사진으로 다시 시도해 주세요. 처음 실행할 때 OCR 라이브러리와 한국어 데이터 다운로드가 필요할 수 있습니다.');}
     finally{btn.disabled=false;btn.textContent='사진 글자 인식하기';}
   });
   async function renderMedicines(){
     const host=$('medicationsList');if(!activeUser){host.innerHTML='<div class="empty">로그인 후 약 정보를 확인할 수 있습니다.</div>';return;}
     host.innerHTML='<div class="empty">불러오는 중…</div>';
     try{const snap=await getDocs(collection(db,'users',activeUser.uid,'medications'));const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));rows.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
-      let migrated=false;
-      for(const m of rows){if(m.startDate&&!events.some(ev=>ev.sourceMedicationId===m.id)){events.push({id:'med-'+m.id,sourceMedicationId:m.id,title:'💊 '+(m.name||'투약'),date:m.startDate,time:'',category:'투약',repeat:'none',notes:[m.how,m.schedule].filter(Boolean).join(' · '),source:'medication'});migrated=true;}}
-      if(migrated)await saveEvents();
-      host.innerHTML=rows.length?rows.map(m=>`<div class="event"><div class="iconbox" style="background:#E4EEE8;color:#0B3D2E">💊</div><div class="grow"><strong>${esc(m.name||'이름 미입력')}</strong><small>${esc(m.effect||'효능 미입력')}<br>복용법: ${esc(m.how||'미입력')}<br>일정: ${esc(m.schedule||'미입력')}<br>투약일: ${esc(m.startDate||'날짜 미지정')}</small>${m.startDate?`<button class="btn ghost" style="margin-top:7px;padding:7px 10px;min-height:34px" data-med-date="${esc(m.startDate)}">해당 날짜 달력 보기</button>`:''}</div><button class="btn ghost" data-delete-med="${esc(m.id)}">삭제</button></div>`).join(''):'<div class="empty">저장된 약 정보가 없습니다.</div>';
+      host.innerHTML=rows.length?rows.map(m=>`<div class="event"><div class="iconbox" style="background:#E4EEE8;color:#0B3D2E">💊</div><div class="grow"><strong>${esc(m.name||'이름 미입력')}</strong><small>${esc(m.effect||'효능 미입력')}<br>복용법: ${esc(m.how||'미입력')}<br>일정: ${esc(m.schedule||'미입력')}${m.startDate?' · 시작일 '+esc(m.startDate):''}</small></div><button class="btn ghost" data-delete-med="${esc(m.id)}">삭제</button></div>`).join(''):'<div class="empty">저장된 약 정보가 없습니다.</div>';
     }catch(err){console.error(err);host.innerHTML='<div class="empty">약 정보를 불러오지 못했습니다. Firestore 보안 규칙을 확인해 주세요.</div>';}
   }
   $('saveMedicine').addEventListener('click',async()=>{
     if(!activeUser){info('로그인이 필요합니다','약 정보를 온라인에 저장하려면 먼저 로그인해 주세요.');return;}
     const name=$('medicineName').value.trim();if(!name){info('약 이름을 입력해 주세요','OCR 결과를 확인하고 약 이름을 입력해 주세요.');return;}
     const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
-    const startDate=$('medicineDate').value||dateKey(today);
-    const item={name,effect:$('medicineEffect').value.trim(),how:$('medicineHow').value.trim(),schedule:$('medicineSchedule').value.trim(),startDate,updatedAt:new Date().toISOString()};
-    try{
-      await setDoc(doc(db,'users',activeUser.uid,'medications',id),item);
-      events=events.filter(e=>e.sourceMedicationId!==id);
-      events.push({id:'med-'+id,sourceMedicationId:id,title:'💊 '+name,date:startDate,time:'',category:'투약',repeat:'none',notes:[item.how,item.schedule].filter(Boolean).join(' · '),source:'medication'});
-      await saveEvents();selectedDate=startDate;monthDate=parseDate(startDate);renderAll();await renderMedicines();
-      info('저장 완료','투약관리 목록에 추가했고, 선택한 투약일을 달력과 해당 날짜 일정에 표시했습니다. 복용법은 원본 처방 지시와 대조해 주세요.');
-    }catch(err){console.error(err);info('저장 실패','약 정보를 저장하지 못했습니다. Firestore 규칙과 인터넷 연결을 확인해 주세요.');}
+    const item={name,effect:$('medicineEffect').value.trim(),how:$('medicineHow').value.trim(),schedule:$('medicineSchedule').value.trim(),startDate:$('medicineDate').value,updatedAt:new Date().toISOString()};
+    try{await setDoc(doc(db,'users',activeUser.uid,'medications',id),item);info('저장 완료','약 정보가 계정에 저장되었습니다. 효능과 복용법은 원본 처방 지시와 대조해 주세요.');await renderMedicines();}
+    catch(err){console.error(err);info('저장 실패','약 정보를 저장하지 못했습니다. Firestore 규칙과 인터넷 연결을 확인해 주세요.');}
   });
   $('refreshMedicines').addEventListener('click',renderMedicines);
-  $('medicationsList').addEventListener('click',async e=>{
-    const dateBtn=e.target.closest('[data-med-date]');if(dateBtn){selectedDate=dateBtn.dataset.medDate;monthDate=parseDate(selectedDate);showScreen('calendar');return;}
-    const b=e.target.closest('[data-delete-med]');if(!b||!activeUser)return;if(!confirm('이 약 정보와 연결된 달력 투약 일정을 함께 삭제할까요?'))return;
-    try{await (await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js')).deleteDoc(doc(db,'users',activeUser.uid,'medications',b.dataset.deleteMed));events=events.filter(x=>x.sourceMedicationId!==b.dataset.deleteMed);await saveEvents();await renderMedicines();}
-    catch(err){console.error(err);info('삭제 실패','약 정보 또는 달력 일정을 삭제하지 못했습니다.');}
-  });
-  $('settingsAccount').addEventListener('click',()=>$('accountSettings').click());
-  $('settingsLogout').addEventListener('click',()=>$('logout').click());
-  $('settingsCalendar').addEventListener('click',()=>showScreen('calendar'));
-  $('refreshHolidays').addEventListener('click',async()=>{try{await loadHolidays(monthDate.getFullYear(),true);info('공휴일 연동 완료',`${monthDate.getFullYear()}년 공휴일 데이터를 불러왔습니다. 달력에서 빨간색 공휴일 표시를 확인하세요.`);}catch(err){info('공휴일 연동 실패','무료 공휴일 서버에 연결하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');}});
+  $('medicationsList').addEventListener('click',async e=>{const b=e.target.closest('[data-delete-med]');if(!b||!activeUser)return;if(!confirm('이 약 정보를 삭제할까요?'))return;try{await (await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js')).deleteDoc(doc(db,'users',activeUser.uid,'medications',b.dataset.deleteMed));await renderMedicines();}catch(err){console.error(err);info('삭제 실패','약 정보를 삭제하지 못했습니다.');}});
   $('closeInfo').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoOk').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoModal').addEventListener('click',e=>{if(e.target===$('infoModal'))$('infoModal').classList.remove('open');});
   renderAll();
 })();
