@@ -58,10 +58,10 @@
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>오늘의 기록</h2><span class="pill">다이어리</span></div>
           <div class="field"><label for="diaryText">오늘 있었던 일</label><textarea id="diaryText" placeholder="오늘의 생각이나 기억하고 싶은 일을 적어보세요."></textarea></div>
-          <div class="field"><label for="diaryPhotos">사진·파일 첨부</label><input id="diaryPhotos" type="file" accept="image/*,.pdf,.txt,.doc,.docx" multiple><small>아이폰 사진 보관함 또는 카메라를 이용해 사진을 추가할 수 있습니다. 현재 첨부파일은 이 브라우저에 저장되며, 다른 기기 동기화에는 파일 저장소 연결이 필요합니다.</small></div>
+          <div class="field"><label for="diaryPhotos">사진·파일 첨부</label><input id="diaryPhotos" type="file" accept="image/*,.pdf,.txt,.doc,.docx" multiple><small>아이폰 사진 보관함 또는 카메라를 이용해 사진을 추가할 수 있습니다. 사진 첨부가 가능한 다이어리 기록 메뉴에서 기록별로 저장할 수 있습니다.</small></div>
           <div id="diaryAttachments" class="attach-list"></div>
           <button id="saveDiary" class="btn full">오늘의 일기 저장</button>
-          <div class="sub" style="margin-top:8px">일기 텍스트는 Firebase에 온라인 저장됩니다. 첨부파일은 현재 이 브라우저에만 저장됩니다.</div>
+          <div class="sub" style="margin-top:8px">상세 일기와 사진을 함께 저장하려면 전체 메뉴의 다이어리 기록을 이용하세요.</div>
         </div>
       </section>
       <section id="calendarScreen" class="screen">
@@ -74,27 +74,27 @@
         <div class="card" style="margin-top:16px"><div class="section-head"><h2 id="selectedTitle">선택한 날짜</h2><button class="btn secondary" data-action="new-event">＋ 추가</button></div><div id="selectedEvents" class="stack"></div></div>
       </section>
       <section id="scanScreen" class="screen">
-        <div class="card">
-          <div class="section-head"><h2>카메라 문자 인식</h2><span class="pill">무료 OCR</span></div>
-          <p class="sub" style="line-height:1.6">사진 속 글자를 브라우저에서 인식합니다. 별도의 유료 AI API는 사용하지 않습니다. 인식한 글자를 확인한 뒤 약 정보를 직접 정리할 수 있습니다.</p>
-          <div class="field"><label for="docType">문서 종류</label><select id="docType"><option value="medicine">약 봉투 / 처방전</option><option value="vehicle">차량 정비 내역</option><option value="inspection">자동차 검사 용지</option><option value="event">일정 / 예약 안내문</option><option value="file">그 외 문서</option></select></div>
-          <div class="field"><label for="scanFile">카메라 촬영 또는 사진 업로드</label><input id="scanFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" capture="environment"><small>아이폰에서는 카메라 또는 사진 보관함 선택 메뉴가 표시될 수 있습니다.</small></div>
-          <img id="scanPreview" class="hidden" alt="업로드 미리보기" style="width:100%;max-height:340px;object-fit:contain;border-radius:16px;background:#F2F6F3">
-          <div id="scanResult" class="notice hidden" style="margin-top:12px"></div>
-          <button id="analyzeBtn" class="btn full" style="margin-top:12px">사진 글자 인식하기</button>
-          <div class="field hidden" id="reviewWrap"><label for="reviewText">인식된 글자 (직접 수정 가능)</label><textarea id="reviewText" rows="10" spellcheck="false"></textarea><small>글자 인식 결과는 틀릴 수 있습니다. 약 이름과 복용량은 원본 문서와 반드시 대조하세요.</small></div>
-          <div class="divider" style="height:1px;background:var(--line);margin:20px 0"></div>
-          <h3>약 정보 정리</h3>
-          <p class="sub">인식된 글자를 참고해 아래 항목을 확인하고 입력하세요. 효능과 복용법은 처방전·약 봉투·약사 안내를 기준으로 확인해야 합니다.</p>
-          <div class="field"><label for="medicineName">약 이름</label><input id="medicineName" placeholder="약 이름을 입력하세요"></div>
-          <div class="field"><label for="medicineEffect">효능·용도 (확인한 내용)</label><textarea id="medicineEffect" placeholder="약 봉투 또는 약사 안내에서 확인한 효능"></textarea></div>
-          <div class="field"><label for="medicineHow">복용법·용량</label><textarea id="medicineHow" placeholder="예: 1회 1정, 식후 복용 (처방 지시를 확인)"></textarea></div>
-          <div class="field"><label for="medicineSchedule">투약 일정·주의사항</label><textarea id="medicineSchedule" placeholder="예: 아침·저녁 식후 / 복용 기간 / 주의사항"></textarea></div>
-          <div class="field"><label for="medicineDate">투약 시작일 (선택)</label><input id="medicineDate" type="date"></div>
-          <button id="saveMedicine" class="btn full" type="button">약 정보 저장</button>
-          <div class="section-head" style="margin-top:20px"><h3>저장된 약 정보</h3><button id="refreshMedicines" class="btn ghost" type="button">새로고침</button></div>
-          <div id="medicationsList" class="stack"><div class="empty">저장된 약 정보가 없습니다.</div></div>
-          <p class="sub" style="line-height:1.5;margin-top:12px">무료 OCR은 글자만 읽습니다. 약의 효능이나 안전한 복용량을 자동 판정하지 않으며, 인식 결과는 반드시 원문과 대조하세요.</p>
+        <div class="card"><div class="section-head"><h2>사진 첨부 안내</h2><span class="pill">직접 입력</span></div><p style="line-height:1.7">OCR 문자 인식 기능은 제거했습니다. 사진은 각 기록 메뉴에서 첨부하고, 내용은 직접 입력합니다.</p><div class="stack"><button class="btn full" data-action="diary">📔 다이어리 기록으로 이동</button><button class="btn full" data-action="cars">🚘 차량 관리로 이동</button><button class="btn full" data-action="meds">💊 투약 관리로 이동</button></div></div>
+      </section>
+      <section id="diaryScreen" class="screen">
+        <div class="card"><div class="section-head"><h2>다이어리 기록</h2><button class="btn" data-new-record="diary">＋ 기록 추가</button></div><p class="sub">날짜별 일기와 메모, 사진을 저장합니다. 저장한 기록은 달력과 오늘의 일정에도 표시됩니다.</p><div id="diaryRecords" class="stack"></div></div>
+      </section>
+      <section id="carsScreen" class="screen">
+        <div class="card"><div class="section-head"><h2>차량 관리</h2><button class="btn" data-new-record="vehicle">＋ 차량 기록 추가</button></div><p class="sub">정비 내역, 영수증, 검사 결과, 보험 관련 사진을 첨부하고 내용을 직접 입력하세요.</p><div id="vehicleRecords" class="stack"></div></div>
+      </section>
+      <section id="medsScreen" class="screen">
+        <div class="card"><div class="section-head"><h2>투약 관리</h2><button class="btn" data-new-record="medication">＋ 투약 기록 추가</button></div><p class="sub">약 이름, 효능, 복용법, 투약 일정과 약 봉투 사진을 직접 입력·첨부합니다. 복용 지시는 처방전이나 약사 안내를 기준으로 확인하세요.</p><div id="medicationRecords" class="stack"></div></div>
+      </section>
+      <section id="recordFormScreen" class="screen">
+        <div class="card"><div class="section-head"><h2 id="recordFormHeading">기록 추가</h2><button class="btn ghost" id="cancelRecord">취소</button></div>
+          <form id="recordForm">
+            <div class="field"><label for="recordDate">날짜</label><input id="recordDate" type="date" required></div>
+            <div class="field"><label id="recordTitleLabel" for="recordTitle">제목</label><input id="recordTitle" required maxlength="120" placeholder="제목을 입력하세요"></div>
+            <div class="field"><label id="recordNotesLabel" for="recordNotes">내용</label><textarea id="recordNotes" rows="6" placeholder="기억할 내용, 상세 내역, 비용 등을 직접 입력하세요"></textarea></div>
+            <div class="field"><label for="recordPhotos">사진 첨부</label><input id="recordPhotos" type="file" accept="image/*" capture="environment" multiple><small>카메라로 찍거나 사진첩에서 선택할 수 있습니다. 사진은 자동으로 크기를 줄여 계정에 저장합니다. 한 기록에 최대 3장, 각 사진은 압축 후 저장됩니다.</small></div>
+            <div id="recordPhotoPreview" class="attach-list"></div>
+            <button class="btn full" type="submit">기록 저장</button>
+          </form>
         </div>
       </section>
       <section id="searchScreen" class="screen">
@@ -104,7 +104,7 @@
         <div class="card"><h2 style="margin-top:0">전체 메뉴</h2><div class="quick-grid">
           <button class="quick" data-action="new-event"><span class="emoji">🗓️</span><b>일정 관리</b><small>일정·반복·기념일</small></button>
           <button class="quick" data-action="diary"><span class="emoji">📔</span><b>다이어리</b><small>일기와 메모</small></button>
-          <button class="quick" data-action="scan"><span class="emoji">📷</span><b>카메라 OCR</b><small>촬영·문서 인식</small></button>
+          <button class="quick" data-action="scan"><span class="emoji">📷</span><b>사진 첨부 안내</b><small>기록별 카메라·사진 첨부</small></button>
           <button class="quick" data-action="files"><span class="emoji">📁</span><b>사진·파일</b><small>첨부 자료 보관</small></button>
           <button class="quick" data-action="meds"><span class="emoji">💊</span><b>투약 관리</b><small>약품·복용 기록</small></button>
           <button class="quick" data-action="cars"><span class="emoji">🚘</span><b>차량 관리</b><small>정비·검사·보험</small></button>
@@ -116,7 +116,7 @@
     <nav class="bottom" aria-label="주요 메뉴">
       <button class="nav active" data-screen="home"><span>⌂</span>오늘</button>
       <button class="nav" data-screen="calendar"><span>▦</span>달력</button>
-      <button class="nav" data-screen="scan"><span>◎</span>카메라 OCR</button>
+      <button class="nav" data-screen="scan"><span>◎</span>사진 첨부</button>
       <button class="nav" data-screen="search"><span>⌕</span>검색</button>
       <button class="nav" data-screen="menu"><span>☰</span>전체 메뉴</button>
     </nav>
@@ -139,7 +139,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB59GwxK-Wvw1-rLa7Jcw4sN1R7nbQGlbI",
@@ -163,10 +163,10 @@ let cloudReady = false;
   const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const parseDate = s => {const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)};
   const fmt = d => new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}).format(d);
-  let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], currentScreen='home';
+  let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], recordEvents = [], records = [], currentScreen='home';
   const diaryKey = d => 'mylife.diary.'+d;
   async function saveEvents(){if(!activeUser){info('로그인이 필요합니다','먼저 Firebase 계정으로 로그인해 주세요.');return;}try{await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});renderAll();}catch(err){console.error(err);info('저장 실패','일정을 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}}
-  async function loadCloudData(user){activeUser=user;events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderMedicines();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
+  async function loadCloudData(user){activeUser=user;events=[];recordEvents=[];records=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());const rs=await getDocs(collection(db,'users',user.uid,'records'));rs.forEach(d=>records.push({id:d.id,...d.data()}));rebuildRecordEvents();cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderRecordLists();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙과 인터넷 연결을 확인해 주세요.');}}
   function occurrences(e, start, end){
     const out=[]; const from=parseDate(start), to=parseDate(end), base=parseDate(e.date);
     if(e.repeat==='none'||!e.repeat){if(base>=from&&base<=to)out.push({...e,occurrence:dateKey(base)});return out;}
@@ -180,7 +180,7 @@ let cloudReady = false;
       else break;
     }return out;
   }
-  function getForDate(day){const from=day,to=day;return events.flatMap(e=>occurrences(e,from,to)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
+  function getForDate(day){const from=day,to=day;return [...events,...recordEvents].flatMap(e=>occurrences(e,from,to)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
   const CATEGORY_CLASSES={'개인':'personal','업무':'work','조합':'union','기념일':'anniversary','투약':'medication','차량':'vehicle','건강':'health','가족':'family','기타':'other','공휴일':'holiday'};
   const CATEGORY_COLORS={'개인':'#25855A','업무':'#3478D4','조합':'#D97726','기념일':'#C23B8A','투약':'#7651B5','차량':'#64748B','건강':'#D9485F','가족':'#0F8B8D','기타':'#5B6470','공휴일':'#B42318'};
   function categoryClass(c){return CATEGORY_CLASSES[c]||'other'}
@@ -196,7 +196,7 @@ let cloudReady = false;
     for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=dateKey(d),inMonth=d.getMonth()===m, isToday=key===dateKey(today),sel=key===selectedDate,dayEvents=getForDate(key);const cats=[...new Set(dayEvents.map(e=>e.category||'개인'))];const dots=cats.map(c=>`<i class="dot ${categoryClass(c)}" title="${esc(c)}"></i>`).join('');h+=`<button class="day ${inMonth?'':'out'} ${isToday?'today':''} ${sel?'selected':''}" data-day="${key}"><span>${d.getDate()}</span><span class="dots">${dots}</span></button>`;}
     $('calendar').innerHTML=h; $('selectedTitle').textContent=fmt(parseDate(selectedDate)); const list=getForDate(selectedDate);$('selectedEvents').innerHTML=list.length?list.map(eventMarkup).join(''):'<div class="empty">선택한 날짜에 등록된 일정이 없습니다.</div>';
   }
-  function renderAll(){renderToday();renderCalendar();if(currentScreen==='search')renderSearch();}
+  function renderAll(){renderToday();renderCalendar();if(currentScreen==='search')renderSearch();renderRecordLists();}
   function showScreen(name){currentScreen=name;document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(''+name+'Screen').classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='calendar')renderCalendar();window.scrollTo({top:0,behavior:'smooth'});}
   function openEvent(){ $('eventDate').value=selectedDate||dateKey(today);$('eventForm').reset();$('eventDate').value=selectedDate||dateKey(today);$('eventModal').classList.add('open');setTimeout(()=>$('eventName').focus(),100);}
   function closeEvent(){$('eventModal').classList.remove('open');}
@@ -228,74 +228,55 @@ let cloudReady = false;
   function authError(err){const m=err?.code||'';return ({'auth/invalid-credential':'이메일 또는 비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 가입된 이메일입니다. 로그인해 주세요.','auth/weak-password':'비밀번호는 6자 이상이어야 합니다.','auth/invalid-email':'이메일 형식이 올바르지 않습니다.','auth/operation-not-allowed':'Firebase Authentication에서 이메일/비밀번호 로그인을 켜야 합니다.','auth/network-request-failed':'인터넷 연결을 확인해 주세요.','auth/wrong-password':'비밀번호가 올바르지 않습니다.','auth/too-many-requests':'시도 횟수가 많습니다. 잠시 후 다시 시도해 주세요.'})[m]||('오류 코드: '+(m||'알 수 없는 오류'));}
   authPersistenceReady.then(()=>{onAuthStateChanged(auth,user=>{if(user){loadCloudData(user);}else{activeUser=null;cloudReady=false;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');}});}).catch(err=>{console.error('Auth persistence setup failed',err);info('로그인 유지 설정 오류','브라우저의 쿠키/사이트 데이터 설정을 확인해 주세요. 일반 창에서 다시 시도해 주세요.');});
   document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
-  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='new-event'){openEvent();return;}if(a==='scan'){showScreen('scan');return;}if(a==='diary'){showScreen('home');$('diaryText').focus();return;}const messages={files:'사진·파일 보관 화면은 Firebase Storage 연동 단계에서 구현합니다.',meds:'카메라 OCR 메뉴에서 약 봉투 사진의 글자를 무료로 인식하고 약 정보를 정리할 수 있습니다.',cars:'차량 정보·정비·검사 기록 폼을 다음 단계에서 구현합니다.',holidays:'대한민국 공휴일은 공식 공휴일 데이터 연동 후 자동 표시합니다.',settings:'계정 설정과 개인정보 관련 기능은 Firebase 인증 연결 후 구현합니다.'};info('기능 안내',messages[a]||'이 기능은 다음 개발 단계에서 연결합니다.');}));
+  document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;if(a==='new-event'){openEvent();return;}if(a==='scan'){showScreen('scan');return;}if(a==='diary'){showScreen('diary');renderRecordLists();return;}if(a==='meds'){showScreen('meds');renderRecordLists();return;}if(a==='cars'){showScreen('cars');renderRecordLists();return;}const messages={files:'사진은 다이어리·차량·투약 각 기록에 첨부할 수 있습니다.',holidays:'공휴일 연동은 추후 별도 연결할 수 있습니다.',settings:'계정 설정은 화면 위쪽의 계정 설정 버튼에서 이용하세요.'};info('기능 안내',messages[a]||'');}));
   $('eventForm').addEventListener('submit',e=>{e.preventDefault();events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date:$('eventDate').value,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=$('eventDate').value;saveEvents();closeEvent();showScreen('calendar');});
   $('closeModal').addEventListener('click',closeEvent);$('eventModal').addEventListener('click',e=>{if(e.target===$('eventModal'))closeEvent();});
   $('prevMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()-1,1);renderCalendar();});
   $('nextMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()+1,1);renderCalendar();});
   $('calendar').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selectedDate=b.dataset.day;const d=parseDate(selectedDate);monthDate=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();});
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const id=b.dataset.delete;if(confirm('이 반복 일정 전체를 삭제할까요?')){events=events.filter(x=>x.id!==id);saveEvents();}});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const id=b.dataset.delete;if(String(id).startsWith('record-')){const rid=String(id).slice(7);if(confirm('이 기록은 해당 메뉴에서 수정·삭제할 수 있습니다. 해당 메뉴로 이동할까요?')){const r=records.find(x=>x.id===rid);if(r)showScreen(r.type==='vehicle'?'cars':r.type==='medication'?'meds':'diary');}return;}if(confirm('이 반복 일정 전체를 삭제할까요?')){events=events.filter(x=>x.id!==id);saveEvents();}});
   let pendingDiaryAttachments=[];
   function readDiary(day){const cloud=diaryCache[day]||{};let local={};try{local=JSON.parse(localStorage.getItem(diaryKey(day))||'{}')}catch{}return {text:cloud.text??local.text??'',attachments:local.attachments||[]};}
   function renderDiaryAttachments(items){$('diaryAttachments').innerHTML=(items||[]).map((a,i)=>`<div class="attach-item">${a.data&&a.type&&a.type.startsWith('image/')?`<img src="${a.data}" alt="${esc(a.name)}">`:`<div style="height:70px;display:grid;place-items:center;font-size:26px">📎</div>`}<div class="file-name">${esc(a.name)}</div><button type="button" data-remove-attachment="${i}" aria-label="첨부 삭제">×</button></div>`).join('');}
   $('diaryPhotos').addEventListener('change',async e=>{const files=[...(e.target.files||[])];for(const f of files){if(f.size>2*1024*1024){info('파일 크기 안내',`${esc(f.name)} 파일은 2MB를 초과합니다. 현재 첨부파일은 2MB 이하만 지원합니다. 큰 파일은 파일 저장소 연결 후 사용할 수 있습니다.`);continue;}const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f)});pendingDiaryAttachments.push({name:f.name,type:f.type,data});}renderDiaryAttachments(pendingDiaryAttachments);e.target.value='';});
   $('diaryAttachments').addEventListener('click',e=>{const b=e.target.closest('[data-remove-attachment]');if(!b)return;pendingDiaryAttachments.splice(Number(b.dataset.removeAttachment),1);renderDiaryAttachments(pendingDiaryAttachments);});
-  $('saveDiary').addEventListener('click',async()=>{if(!activeUser){info('로그인이 필요합니다','먼저 로그인해 주세요.');return;}const day=dateKey(today);try{await setDoc(doc(db,'users',activeUser.uid,'diary',day),{text:$('diaryText').value,updatedAt:new Date().toISOString()},{merge:true});diaryCache[day]={...(diaryCache[day]||{}),text:$('diaryText').value};try{localStorage.setItem(diaryKey(day),JSON.stringify({text:$('diaryText').value,attachments:pendingDiaryAttachments}));}catch{}info('저장 완료','일기 내용은 Firebase에 온라인 저장했습니다. 첨부파일은 현재 이 브라우저에만 저장되므로 다른 기기에서는 보이지 않습니다.');}catch(err){console.error(err);info('저장 실패','일기를 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}});
+  $('saveDiary').addEventListener('click',async()=>{if(!activeUser){info('로그인이 필요합니다','먼저 로그인해 주세요.');return;}const day=dateKey(today);try{await setDoc(doc(db,'users',activeUser.uid,'diary',day),{text:$('diaryText').value,updatedAt:new Date().toISOString()},{merge:true});diaryCache[day]={...(diaryCache[day]||{}),text:$('diaryText').value};try{localStorage.setItem(diaryKey(day),JSON.stringify({text:$('diaryText').value,attachments:pendingDiaryAttachments}));}catch{}info('저장 완료','오늘의 간단 메모를 Firebase에 저장했습니다. 사진을 포함한 일기 기록은 다이어리 기록 메뉴에서 저장하세요.');}catch(err){console.error(err);info('저장 실패','일기를 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}});
   
   $('searchInput').addEventListener('input',renderSearch);
   function renderSearch(){const q=$('searchInput').value.trim().toLowerCase();const found=events.filter(e=>!q||(e.title+' '+e.notes+' '+e.category).toLowerCase().includes(q));$('searchResults').innerHTML=found.length?found.map(e=>`<div class="event"><div class="grow"><strong>${esc(e.title)}</strong><small>${esc(e.date)} · ${esc(e.category)}</small></div><button class="btn ghost" data-goto="${esc(e.date)}">보기</button></div>`).join(''):'<div class="empty">검색 결과가 없습니다.</div>';}
   $('searchResults').addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(!b)return;selectedDate=b.dataset.goto;monthDate=parseDate(selectedDate);showScreen('calendar');});
-  $('scanFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const img=$('scanPreview');if(f.type.startsWith('image/')){img.src=URL.createObjectURL(f);img.classList.remove('hidden');$('scanResult').textContent=`선택한 사진: ${f.name} · ${(f.size/1024/1024).toFixed(2)} MB. 사진 글자 인식은 브라우저에서 처리합니다.`;}else{img.classList.add('hidden');$('scanResult').textContent='이미지 파일을 선택해 주세요.';}$('scanResult').classList.remove('hidden');});
-  $('analyzeBtn').addEventListener('click',async()=>{
-    const file=$('scanFile').files?.[0];
-    if(!file){info('사진을 선택해 주세요','카메라로 촬영하거나 사진첩에서 약 봉투 또는 문서 사진을 선택해 주세요.');return;}
-    if(!file.type.startsWith('image/')){info('이미지 파일 필요','JPG, PNG, WEBP 등의 사진 파일을 선택해 주세요. PDF는 현재 직접 인식하지 않습니다.');return;}
-    if(file.size>12*1024*1024){info('파일 크기 초과','12MB 이하의 사진을 사용해 주세요.');return;}
-    const btn=$('analyzeBtn');btn.disabled=true;btn.textContent='글자 인식 준비 중…';$('reviewWrap').classList.add('hidden');
-    try{
-      // Tesseract.js performs OCR in the browser; no paid AI API key is used.
-      const mod=await import('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.esm.min.js');
-      const createWorker = mod.createWorker || mod.default?.createWorker;
-      if (typeof createWorker !== 'function') throw new Error('Tesseract.js 작업자 함수를 불러오지 못했습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.');
-      const worker = await createWorker('kor+eng', 1, {
-        workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js',
-        corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1',
-        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
-        gzip: true,
-        logger: m => {
-          if (m.status === 'recognizing text') btn.textContent = `글자 인식 중… ${Math.round((m.progress || 0) * 100)}%`;
-          else if (m.status) btn.textContent = `인식 준비 중… ${m.status}`;
-        }
-      });
-      let result;
-      try { result = await worker.recognize(file); }
-      finally { await worker.terminate(); }
-      const textOut=(result.data?.text||'').trim();
-      if(!textOut)throw new Error('글자를 읽지 못했습니다. 사진을 밝게 찍고 글자가 선명하게 보이도록 다시 시도해 주세요.');
-      $('reviewText').value=textOut;$('reviewWrap').classList.remove('hidden');
-      $('scanResult').textContent='글자 인식이 완료되었습니다. 아래 인식 결과를 확인한 뒤 약 이름·효능·복용법·투약 일정을 직접 정리해 저장하세요.';$('scanResult').classList.remove('hidden');
-      const firstLine=textOut.split(/\n+/).map(x=>x.trim()).find(x=>x.length>=2);
-      if(firstLine&&!$('medicineName').value.trim()&&$('docType').value==='medicine')$('medicineName').value=firstLine.slice(0,100);
-    }catch(err){console.error('OCR startup/recognition error:',err);const detail=(err&&err.message)?err.message:String(err||'알 수 없는 오류');info('글자 인식 실패',esc(detail)+'<br><br>OCR 엔진 또는 한국어 데이터 로딩에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요. 오류가 반복되면 F12 → Console의 첫 번째 빨간 오류를 확인해 주세요.');}
-    finally{btn.disabled=false;btn.textContent='사진 글자 인식하기';}
-  });
-  async function renderMedicines(){
-    const host=$('medicationsList');if(!activeUser){host.innerHTML='<div class="empty">로그인 후 약 정보를 확인할 수 있습니다.</div>';return;}
-    host.innerHTML='<div class="empty">불러오는 중…</div>';
-    try{const snap=await getDocs(collection(db,'users',activeUser.uid,'medications'));const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));rows.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
-      host.innerHTML=rows.length?rows.map(m=>`<div class="event"><div class="iconbox" style="background:#E4EEE8;color:#0B3D2E">💊</div><div class="grow"><strong>${esc(m.name||'이름 미입력')}</strong><small>${esc(m.effect||'효능 미입력')}<br>복용법: ${esc(m.how||'미입력')}<br>일정: ${esc(m.schedule||'미입력')}${m.startDate?' · 시작일 '+esc(m.startDate):''}</small></div><button class="btn ghost" data-delete-med="${esc(m.id)}">삭제</button></div>`).join(''):'<div class="empty">저장된 약 정보가 없습니다.</div>';
-    }catch(err){console.error(err);host.innerHTML='<div class="empty">약 정보를 불러오지 못했습니다. Firestore 보안 규칙을 확인해 주세요.</div>';}
+  let recordType='diary', editingRecordId=null, pendingRecordPhotos=[];
+  const recordTypeNames={diary:'다이어리',vehicle:'차량 관리',medication:'투약 관리'};
+  const recordCategory={diary:'개인',vehicle:'차량',medication:'투약'};
+  function rebuildRecordEvents(){recordEvents=records.map(r=>({id:'record-'+r.id,recordId:r.id,title:r.title||recordTypeNames[r.type]+' 기록',date:r.date,category:recordCategory[r.type]||'개인',repeat:'none',notes:r.notes||'',time:'',isRecord:true}));}
+  function recordPhotosMarkup(items,preview=false){return (items||[]).map((a,i)=>`<div class="attach-item"><img src="${a.data}" alt="${esc(a.name||'첨부 사진')}"><div class="file-name">${esc(a.name||'사진')}</div>${preview?`<button type="button" data-remove-record-photo="${i}" aria-label="사진 삭제">×</button>`:''}</div>`).join('');}
+  function renderRecordLists(){
+    const map={diary:'diaryRecords',vehicle:'vehicleRecords',medication:'medicationRecords'};
+    for(const type of Object.keys(map)){
+      const host=$(map[type]);if(!host)continue;
+      const rows=records.filter(r=>r.type===type).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.updatedAt||'').localeCompare(a.updatedAt||''));
+      host.innerHTML=rows.length?rows.map(r=>`<article class="card" style="padding:13px;margin:10px 0;box-shadow:none"><div class="section-head"><div class="grow"><strong>${esc(r.title||'제목 없음')}</strong><div class="sub" style="margin-top:5px">${esc(r.date||'날짜 없음')}</div></div><span class="pill">${recordTypeNames[type]}</span></div><div style="white-space:pre-wrap;line-height:1.55;margin:10px 0">${esc(r.notes||'내용 없음')}</div>${r.photos?.length?`<div class="attach-list">${recordPhotosMarkup(r.photos)}</div>`:''}<div class="row" style="margin-top:12px"><button class="btn secondary grow" data-edit-record="${esc(r.id)}">수정</button><button class="btn ghost" data-delete-record="${esc(r.id)}">삭제</button></div></article>`).join(''):'<div class="empty">저장된 기록이 없습니다. ＋ 기록 추가를 눌러 직접 입력해 보세요.</div>';
+    }
   }
-  $('saveMedicine').addEventListener('click',async()=>{
-    if(!activeUser){info('로그인이 필요합니다','약 정보를 온라인에 저장하려면 먼저 로그인해 주세요.');return;}
-    const name=$('medicineName').value.trim();if(!name){info('약 이름을 입력해 주세요','OCR 결과를 확인하고 약 이름을 입력해 주세요.');return;}
-    const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
-    const item={name,effect:$('medicineEffect').value.trim(),how:$('medicineHow').value.trim(),schedule:$('medicineSchedule').value.trim(),startDate:$('medicineDate').value,updatedAt:new Date().toISOString()};
-    try{await setDoc(doc(db,'users',activeUser.uid,'medications',id),item);info('저장 완료','약 정보가 계정에 저장되었습니다. 효능과 복용법은 원본 처방 지시와 대조해 주세요.');await renderMedicines();}
-    catch(err){console.error(err);info('저장 실패','약 정보를 저장하지 못했습니다. Firestore 규칙과 인터넷 연결을 확인해 주세요.');}
-  });
-  $('refreshMedicines').addEventListener('click',renderMedicines);
-  $('medicationsList').addEventListener('click',async e=>{const b=e.target.closest('[data-delete-med]');if(!b||!activeUser)return;if(!confirm('이 약 정보를 삭제할까요?'))return;try{await (await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js')).deleteDoc(doc(db,'users',activeUser.uid,'medications',b.dataset.deleteMed));await renderMedicines();}catch(err){console.error(err);info('삭제 실패','약 정보를 삭제하지 못했습니다.');}});
+  function openRecordForm(type,id=null){
+    if(!activeUser){info('로그인이 필요합니다','기록을 저장하려면 먼저 로그인해 주세요.');return;}
+    recordType=type;editingRecordId=id;pendingRecordPhotos=[];
+    const r=id?records.find(x=>x.id===id):null;
+    $('recordFormHeading').textContent=(r?'기록 수정':'새 기록 추가')+' · '+recordTypeNames[type];
+    $('recordTitleLabel').textContent=type==='medication'?'약 이름':type==='vehicle'?'차량·정비 제목':'제목';
+    $('recordNotesLabel').textContent=type==='medication'?'효능·복용법·투약 일정 및 주의사항':type==='vehicle'?'차량번호·주행거리·정비내역·비용 등':'일기·메모';
+    $('recordTitle').placeholder=type==='medication'?'예: 약 이름':type==='vehicle'?'예: 엔진오일 교환 / 자동차 검사':'예: 오늘의 기록';
+    $('recordNotes').placeholder=type==='medication'?'효능(확인한 내용), 처방된 복용법, 복용 시간·기간, 주의사항을 직접 입력하세요.':type==='vehicle'?'차량번호, 주행거리, 정비·검사 내역, 업체, 비용, 다음 점검일 등을 직접 입력하세요.':'기억할 일이나 메모를 직접 입력하세요.';
+    $('recordDate').value=r?.date||selectedDate||dateKey(today);$('recordTitle').value=r?.title||'';$('recordNotes').value=r?.notes||'';pendingRecordPhotos=(r?.photos||[]).map(x=>({...x}));$('recordPhotos').value='';renderRecordPhotoPreview();showScreen('recordForm');
+  }
+  function renderRecordPhotoPreview(){$('recordPhotoPreview').innerHTML=recordPhotosMarkup(pendingRecordPhotos,true);}
+  async function compressPhoto(file){return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('사진을 읽지 못했습니다.'));img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.62);resolve({name:file.name||'사진.jpg',type:'image/jpeg',data});};img.src=reader.result;};reader.readAsDataURL(file);});}
+  document.querySelectorAll('[data-new-record]').forEach(b=>b.addEventListener('click',()=>openRecordForm(b.dataset.newRecord)));
+  $('cancelRecord').addEventListener('click',()=>showScreen(recordType==='vehicle'?'cars':recordType==='medication'?'meds':'diary'));
+  $('recordPhotos').addEventListener('change',async e=>{const files=[...(e.target.files||[])];for(const f of files){if(!f.type.startsWith('image/'))continue;if(pendingRecordPhotos.length>=3){info('사진 개수 안내','기록 한 건에는 사진을 최대 3장까지 첨부할 수 있습니다.');break;}try{pendingRecordPhotos.push(await compressPhoto(f));}catch(err){console.error(err);info('사진 읽기 실패',esc(f.name)+' 사진을 불러오지 못했습니다.');}}e.target.value='';renderRecordPhotoPreview();});
+  $('recordPhotoPreview').addEventListener('click',e=>{const b=e.target.closest('[data-remove-record-photo]');if(!b)return;pendingRecordPhotos.splice(Number(b.dataset.removeRecordPhoto),1);renderRecordPhotoPreview();});
+  $('recordForm').addEventListener('submit',async e=>{e.preventDefault();if(!activeUser){info('로그인이 필요합니다','먼저 로그인해 주세요.');return;}const title=$('recordTitle').value.trim();if(!title){info('제목을 입력해 주세요','제목 또는 약 이름을 입력하세요.');return;}const id=editingRecordId||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now()));const item={type:recordType,title,date:$('recordDate').value,notes:$('recordNotes').value.trim(),photos:pendingRecordPhotos,updatedAt:new Date().toISOString()};try{await setDoc(doc(db,'users',activeUser.uid,'records',id),item);records=records.filter(x=>x.id!==id);records.push({id,...item});rebuildRecordEvents();selectedDate=item.date;monthDate=parseDate(item.date);renderAll();showScreen(recordType==='vehicle'?'cars':recordType==='medication'?'meds':'diary');info('저장 완료','기록과 사진을 계정에 저장했습니다. 해당 날짜는 달력과 오늘의 일정에 자동으로 표시됩니다.');}catch(err){console.error(err);info('저장 실패','기록을 저장하지 못했습니다. 사진 수를 줄이거나 사진을 더 작게 만든 뒤 다시 시도해 주세요. Firestore 문서 크기 제한 또는 보안 규칙을 확인해야 할 수 있습니다.');}});
+  document.addEventListener('click',async e=>{const edit=e.target.closest('[data-edit-record]');if(edit){const r=records.find(x=>x.id===edit.dataset.editRecord);if(r)openRecordForm(r.type,r.id);return;}const del=e.target.closest('[data-delete-record]');if(del&&activeUser){if(!confirm('이 기록과 첨부 사진을 삭제할까요?'))return;try{await deleteDoc(doc(db,'users',activeUser.uid,'records',del.dataset.deleteRecord));records=records.filter(x=>x.id!==del.dataset.deleteRecord);rebuildRecordEvents();renderAll();}catch(err){console.error(err);info('삭제 실패','기록을 삭제하지 못했습니다.');}}});
   $('closeInfo').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoOk').addEventListener('click',()=>$('infoModal').classList.remove('open'));$('infoModal').addEventListener('click',e=>{if(e.target===$('infoModal'))$('infoModal').classList.remove('open');});
   renderAll();
 })();
