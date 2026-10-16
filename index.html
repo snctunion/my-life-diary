@@ -115,8 +115,9 @@
       <div class="sheet-head"><h2 id="eventTitle">일정 등록</h2><button class="close" id="closeModal" aria-label="닫기">×</button></div>
       <form id="eventForm">
         <div class="field"><label for="eventName">일정 제목</label><input id="eventName" required placeholder="예: 병원 예약, 생일"></div>
-        <div class="field"><label for="eventDate">날짜</label><input id="eventDate" type="date" required></div>
-        <div class="field"><label for="eventTime">시간 (선택)</label><input id="eventTime" type="time"></div>
+        <div class="field"><label for="eventDate">시작 날짜</label><input id="eventDate" type="date" required></div>
+        <div class="field"><label>기간 설정</label><div class="row"><select id="eventDurationUnit" aria-label="기간 단위" class="grow"><option value="day">일 단위</option><option value="month">월 단위</option></select><input id="eventDurationCount" type="number" min="1" max="120" value="1" aria-label="기간 수" class="grow" required></div><small>예: 10일 또는 2개월을 설정하면 시작일부터 기간 마지막 날까지 달력에 표시됩니다.</small></div>
+        <div class="field"><label for="eventTime">시간 (선택, 분은 5분 단위)</label><input id="eventTime" type="time" step="300"></div>
         <div class="field"><label for="eventCategory">분류</label><select id="eventCategory"><option value="개인">개인</option><option value="업무">업무</option><option value="조합">조합</option><option value="기념일">기념일</option><option value="투약">투약</option><option value="차량">차량</option><option value="건강">건강</option><option value="가족">가족</option><option value="기타">기타</option></select><small>개인·업무·조합뿐 아니라 기념일·투약·차량·건강·가족·기타도 서로 겹치지 않는 고유색으로 표시됩니다.</small></div>
         <div class="field"><label for="eventRepeat">반복</label><select id="eventRepeat"><option value="none">반복 안 함</option><option value="daily">매일</option><option value="weekly">매주</option><option value="monthly">매월</option><option value="yearly">매년</option><option value="custom">사용자 지정 (추후 확장)</option></select></div>
         <div class="field"><label for="eventNotes">메모</label><textarea id="eventNotes" placeholder="장소, 준비물, 참고 내용"></textarea></div>
@@ -176,9 +177,17 @@ let cloudReady = false;
   const diaryKey = d => 'mylife.diary.'+d;
   async function saveEvents(){if(!activeUser){info('로그인이 필요합니다','먼저 Firebase 계정으로 로그인해 주세요.');return;}try{await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});renderAll();}catch(err){console.error(err);info('저장 실패','일정을 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}}
   async function loadCloudData(user){activeUser=user;const accountInfo=$('loginAccountInfo');if(accountInfo)accountInfo.textContent=user.email||'로그인 계정';events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderMedicines();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
+  function eventEndDate(e){
+    if(e.endDate)return e.endDate;
+    const count=Math.max(1,Number(e.durationCount)||1), unit=e.durationUnit||'day';
+    const start=parseDate(e.date);
+    if(unit==='month'){const day=start.getDate();start.setDate(1);start.setMonth(start.getMonth()+count);start.setDate(Math.min(day,new Date(start.getFullYear(),start.getMonth()+1,0).getDate()));}else start.setDate(start.getDate()+count);
+    start.setDate(start.getDate()-1);
+    return dateKey(start);
+  }
   function occurrences(e, start, end){
     const out=[]; const from=parseDate(start), to=parseDate(end), base=parseDate(e.date);
-    if(e.repeat==='none'||!e.repeat){if(base>=from&&base<=to)out.push({...e,occurrence:dateKey(base)});return out;}
+    if(e.repeat==='none'||!e.repeat){const last=parseDate(eventEndDate(e));const firstDay=base>from?base:from;const lastDay=last<to?last:to;for(let cur=new Date(firstDay);cur<=lastDay;cur.setDate(cur.getDate()+1))out.push({...e,occurrence:dateKey(cur)});return out;}
     let cur=new Date(base);
     for(let i=0;i<1500&&cur<=to;i++){
       if(cur>=from)out.push({...e,occurrence:dateKey(cur)});
@@ -241,7 +250,7 @@ let cloudReady = false;
   $('todayAddButton').addEventListener('click',()=>info('추가할 기록 선택',`<div class="stack"><button type="button" class="btn full" data-add-kind="event">일정</button><button type="button" class="btn full" data-add-kind="diary">다이어리</button><button type="button" class="btn full" data-add-kind="medication">투약</button><button type="button" class="btn full" data-add-kind="vehicle">차량관리</button></div>`));
   $('infoBody').addEventListener('click',e=>{const b=e.target.closest('[data-add-kind]');if(!b)return;$('infoModal').classList.remove('open');if(b.dataset.addKind==='event'){openEvent();return;}openRecordForm(b.dataset.addKind);});
   document.querySelectorAll('[data-archive-category]').forEach(b=>b.addEventListener('click',()=>{archiveCategory=b.dataset.archiveCategory;document.querySelectorAll('[data-archive-category]').forEach(x=>x.classList.toggle('active',x===b));renderRecordArchive();}));
-  $('eventForm').addEventListener('submit',e=>{e.preventDefault();events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date:$('eventDate').value,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=$('eventDate').value;saveEvents();closeEvent();showScreen('calendar');});
+  $('eventForm').addEventListener('submit',e=>{e.preventDefault();const date=$('eventDate').value,unit=$('eventDurationUnit').value,count=Math.max(1,Math.min(120,Number($('eventDurationCount').value)||1));const end=parseDate(date);if(unit==='month'){const day=end.getDate();end.setDate(1);end.setMonth(end.getMonth()+count);end.setDate(Math.min(day,new Date(end.getFullYear(),end.getMonth()+1,0).getDate()));}else end.setDate(end.getDate()+count);end.setDate(end.getDate()-1);events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date,endDate:dateKey(end),durationUnit:unit,durationCount:count,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=date;saveEvents();closeEvent();showScreen('calendar');});
   $('closeModal').addEventListener('click',closeEvent);$('eventModal').addEventListener('click',e=>{if(e.target===$('eventModal'))closeEvent();});
   $('prevMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()-1,1);renderCalendar();});
   $('nextMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()+1,1);renderCalendar();});
