@@ -30,7 +30,9 @@
     .login{min-height:100dvh;display:grid;place-items:center;padding:24px;background:linear-gradient(160deg,#0B3D2E,#E4EEE8 80%)}.login-card{background:white;border-radius:26px;padding:24px;width:100%;max-width:420px;box-shadow:0 18px 60px #0B2A1E24}.login-logo{width:58px;height:58px;border-radius:18px;background:var(--purple);color:white;display:grid;place-items:center;font-size:26px}.login-card h1{margin:18px 0 6px;font-size:26px}.hidden{display:none!important}
     @media(min-width:760px){.app{padding-bottom:20px}.top{border-radius:0 0 28px 28px;padding:26px 30px}.top h1{font-size:30px}main{padding:24px;grid-template-columns:1.2fr .8fr;align-items:start}.span2{grid-column:1/-1}.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.bottom{position:static;border:1px solid var(--line);border-radius:18px;margin:18px auto 0;width:calc(100% - 48px)}.day{min-height:76px}.modal{align-items:center}.sheet{border-radius:24px}.login-card{padding:32px}}
     @media(max-width:360px){main{padding:12px}.top{padding-left:15px;padding-right:15px}.day{min-height:44px;border-radius:9px}.quick{padding:13px 10px}}
-  </style>
+  .version-tag{font-size:11px;font-weight:700;vertical-align:middle;opacity:.82;margin-left:5px;letter-spacing:.02em}
+.time-pick{display:flex;gap:8px;align-items:center}.time-pick select{flex:1;min-width:0}
+</style>
 </head>
 <body>
   <section id="loginScreen" class="login">
@@ -48,7 +50,7 @@
   </section>
   <div id="app" class="app hidden">
     <header class="top">
-      <div class="topline"><div><div class="brand">MY LIFE DIARY</div><h1 id="greeting">MLD</h1><div id="todayDate" class="today-date"></div></div><div class="account-controls"><div id="loginAccountInfo" class="login-account-info"></div><div class="account-buttons"><button id="accountSettings" class="btn secondary top-action" type="button">ACCOUNT<br>SETTINGS</button><button id="logout" class="btn top-action" type="button" style="background:#ffffff1c;border:1px solid #ffffff70;box-shadow:none">LOG<br>OUT</button></div></div></div>
+      <div class="topline"><div><div class="brand">MY LIFE DIARY</div><h1 id="greeting">MLD <small class="version-tag">v1.01</small></h1><div id="todayDate" class="today-date"></div></div><div class="account-controls"><div id="loginAccountInfo" class="login-account-info"></div><div class="account-buttons"><button id="accountSettings" class="btn secondary top-action" type="button">ACCOUNT<br>SETTINGS</button><button id="logout" class="btn top-action" type="button" style="background:#ffffff1c;border:1px solid #ffffff70;box-shadow:none">LOG<br>OUT</button></div></div></div>
     </header>
     <main>
       <section id="homeScreen" class="screen active">
@@ -117,11 +119,11 @@
         <div class="field"><label for="eventName">일정 제목</label><input id="eventName" required placeholder="예: 병원 예약, 생일"></div>
         <div class="field"><label for="eventDate">시작 날짜</label><input id="eventDate" type="date" required></div>
         <div class="field"><label>기간 설정</label><div class="row"><select id="eventDurationUnit" aria-label="기간 단위" class="grow"><option value="day">일 단위</option><option value="month">월 단위</option></select><input id="eventDurationCount" type="number" min="1" max="120" value="1" aria-label="기간 수" class="grow" required></div><small>예: 10일 또는 2개월을 설정하면 시작일부터 기간 마지막 날까지 달력에 표시됩니다.</small></div>
-        <div class="field"><label for="eventTime">시간 (선택, 분은 5분 단위)</label><input id="eventTime" type="time" step="300"></div>
+        <div class="field"><label>TIME (선택)</label><div class="time-pick"><select id="eventHour" aria-label="시간"><option value="">시</option><option value="00">00시</option><option value="01">01시</option><option value="02">02시</option><option value="03">03시</option><option value="04">04시</option><option value="05">05시</option><option value="06">06시</option><option value="07">07시</option><option value="08">08시</option><option value="09">09시</option><option value="10">10시</option><option value="11">11시</option><option value="12">12시</option><option value="13">13시</option><option value="14">14시</option><option value="15">15시</option><option value="16">16시</option><option value="17">17시</option><option value="18">18시</option><option value="19">19시</option><option value="20">20시</option><option value="21">21시</option><option value="22">22시</option><option value="23">23시</option></select><select id="eventMinute" aria-label="분"><option value="">분</option><option value="00">00분</option><option value="05">05분</option><option value="10">10분</option><option value="15">15분</option><option value="20">20분</option><option value="25">25분</option><option value="30">30분</option><option value="35">35분</option><option value="40">40분</option><option value="45">45분</option><option value="50">50분</option><option value="55">55분</option></select></div></div>
         <div class="field"><label for="eventCategory">분류</label><select id="eventCategory"><option value="개인">개인</option><option value="업무">업무</option><option value="조합">조합</option><option value="기념일">기념일</option><option value="투약">투약</option><option value="차량">차량</option><option value="건강">건강</option><option value="가족">가족</option><option value="기타">기타</option></select><small>개인·업무·조합뿐 아니라 기념일·투약·차량·건강·가족·기타도 서로 겹치지 않는 고유색으로 표시됩니다.</small></div>
         <div class="field"><label for="eventRepeat">반복</label><select id="eventRepeat"><option value="none">반복 안 함</option><option value="daily">매일</option><option value="weekly">매주</option><option value="monthly">매월</option><option value="yearly">매년</option><option value="custom">사용자 지정 (추후 확장)</option></select></div>
         <div class="field"><label for="eventNotes">메모</label><textarea id="eventNotes" placeholder="장소, 준비물, 참고 내용"></textarea></div>
-        <button class="btn full" type="submit">일정 저장</button>
+        <button class="btn full" type="submit">SAVE EVENT</button>
       </form>
     </div>
   </div>
@@ -131,6 +133,7 @@
         <input id="recordKind" type="hidden"><input id="recordId" type="hidden"><input id="recordOriginalDate" type="hidden">
         <div class="field"><label for="recordTitle">제목</label><input id="recordTitle" required placeholder="제목을 입력하세요"></div>
         <div class="field"><label for="recordDate">날짜</label><input id="recordDate" type="date" required></div>
+        <div class="field" id="recordDurationField"><label for="recordDurationUnit">DURATION</label><div class="row"><select id="recordDurationUnit" class="grow" aria-label="기간 단위"><option value="day">DAY</option><option value="month">MONTH</option></select><input id="recordDurationCount" class="grow" type="number" min="1" max="120" value="1" aria-label="기간 수" required></div><small>기간 전체가 캘린더에 표시되며, 보관함에는 기록 1건으로 표시됩니다.</small></div>
         <div class="field" id="recordBodyField"><label for="recordBody">내용</label><textarea id="recordBody" placeholder="내용을 입력하세요"></textarea></div>
         <div id="medicationFields" class="hidden">
           <div class="field"><label for="recordEffect">효능·용도</label><textarea id="recordEffect"></textarea></div>
@@ -139,11 +142,11 @@
         </div>
         <div class="field"><label for="recordFiles">사진·파일 첨부</label><input id="recordFiles" type="file" accept="image/*,.pdf,.txt,.doc,.docx" multiple><small>파일은 2MB 이하만 첨부할 수 있으며, 현재 이 브라우저에 저장됩니다.</small></div>
         <div id="recordAttachmentList" class="attach-list"></div>
-        <button class="btn full" id="saveRecordButton" type="submit">저장</button>
+        <button class="btn full" id="saveRecordButton" type="submit">SAVE</button>
       </form>
     </div>
   </div>
-  <div id="infoModal" class="modal" role="dialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2 id="infoTitle">안내</h2><button class="close" id="closeInfo">×</button></div><div id="infoBody" style="line-height:1.7;margin:16px 0"></div><button class="btn full" id="infoOk">확인</button></div></div>
+  <div id="infoModal" class="modal" role="dialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2 id="infoTitle">안내</h2><button class="close" id="closeInfo">×</button></div><div id="infoBody" style="line-height:1.7;margin:16px 0"></div><button class="btn full" id="infoOk">OK</button></div></div>
 <script src="https://cdn.jsdelivr.net/npm/kor-lunar@1.7/dist/kor-lunar.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
@@ -198,12 +201,13 @@ let cloudReady = false;
       else break;
     }return out;
   }
-  function getForDate(day){const from=day,to=day;const found=events.flatMap(e=>occurrences(e,from,to));const [yy,mm,dd]=day.split('-').map(Number);const fixed=[['01-01','신정'],['03-01','삼일절'],['05-05','어린이날'],['06-06','현충일'],['08-15','광복절'],['10-03','개천절'],['10-09','한글날'],['12-25','성탄절']];if(yy>=2026&&yy<=2075){for(const [md,name] of fixed){if(md===`${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`&&!found.some(e=>e.title===name)){found.push({id:`holiday-${yy}-${md}`,title:name,date:day,category:'공휴일',time:'',notes:'고정 양력 공휴일',repeat:'none',occurrence:day,isHoliday:true});}}}return found.sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
+  function getForDate(day){const from=day,to=day;const found=events.flatMap(e=>occurrences(e,from,to));
+    for(const r of (window.__mldRecordCalendar||[])){if(day>=r.date&&day<=r.endDate&&!found.some(e=>e.id===r.id)){found.push({id:r.id,title:r.title,date:r.date,endDate:r.endDate,category:r.category,time:'',notes:'',repeat:'none',recordKind:r.kind,occurrence:day});}}const [yy,mm,dd]=day.split('-').map(Number);const fixed=[['01-01','신정'],['03-01','삼일절'],['05-05','어린이날'],['06-06','현충일'],['08-15','광복절'],['10-03','개천절'],['10-09','한글날'],['12-25','성탄절']];if(yy>=2026&&yy<=2075){for(const [md,name] of fixed){if(md===`${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`&&!found.some(e=>e.title===name)){found.push({id:`holiday-${yy}-${md}`,title:name,date:day,category:'공휴일',time:'',notes:'고정 양력 공휴일',repeat:'none',occurrence:day,isHoliday:true});}}}return found.sort((a,b)=>(a.time||'').localeCompare(b.time||''));}
   const CATEGORY_CLASSES={'개인':'personal','업무':'work','조합':'union','기념일':'anniversary','투약':'medication','차량':'vehicle','건강':'health','가족':'family','기타':'other','공휴일':'holiday'};
   const CATEGORY_COLORS={'개인':'#25855A','업무':'#3478D4','조합':'#D97726','기념일':'#C23B8A','투약':'#7651B5','차량':'#64748B','건강':'#D9485F','가족':'#0F8B8D','기타':'#5B6470','공휴일':'#B42318'};
   function categoryClass(c){return CATEGORY_CLASSES[c]||'other'}
   function categoryColor(c){return CATEGORY_COLORS[c]||CATEGORY_COLORS['기타']}
-  function eventMarkup(e){const c=e.category||'개인',emoji=({'개인':'○','업무':'▤','조합':'⌘','투약':'＋','차량':'◇','건강':'♡','기념일':'☆','가족':'⌂'})[c]||'•',color=categoryColor(c);return `<div class="event"><div class="iconbox" style="background:${color}18;color:${color}">${emoji}</div><div class="grow"><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time)+' · ':''}${esc(c)}${e.repeat&&e.repeat!=='none'?' · '+repeatName(e.repeat):''}${e.notes?' · '+esc(e.notes):''}</small></div><button class="btn ghost" data-delete="${esc(e.id)}" aria-label="일정 삭제">삭제</button></div>`}
+  function eventMarkup(e){const c=e.category||'개인',emoji=({'개인':'○','업무':'▤','조합':'⌘','투약':'＋','차량':'◇','건강':'♡','기념일':'☆','가족':'⌂'})[c]||'•',color=categoryColor(c);return `<div class="event"><div class="iconbox" style="background:${color}18;color:${color}">${emoji}</div><div class="grow"><strong>${esc(e.title)}</strong><small>${e.time?esc(e.time)+' · ':''}${esc(c)}${e.repeat&&e.repeat!=='none'?' · '+repeatName(e.repeat):''}${e.notes?' · '+esc(e.notes):''}</small></div><button class="btn ghost" data-delete="${esc(e.id)}" aria-label="일정 삭제">DELETE</button></div>`}
   function repeatName(r){return ({daily:'매일',weekly:'매주',monthly:'매월',yearly:'매년',custom:'사용자 지정'})[r]||''}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function renderToday(){ $('todayDate').textContent=fmt(today); $('greeting').textContent='MLD';const list=getForDate(dateKey(today));$('todayEvents').innerHTML=list.length?list.map(eventMarkup).join(''):'<div class="empty">오늘 등록된 일정이 없습니다.<br>＋ 일정 추가로 첫 일정을 등록해 보세요.</div>'; const saved=readDiary(dateKey(today));$('diaryText').value=saved.text||'';pendingDiaryAttachments=[...(saved.attachments||[])];renderDiaryAttachments(pendingDiaryAttachments);}
@@ -216,7 +220,7 @@ let cloudReady = false;
   }
   function renderAll(){renderToday();renderCalendar();if(currentScreen==='search')renderSearch();}
   function showScreen(name){currentScreen=name;document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(''+name+'Screen').classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='calendar')renderCalendar();if(name==='menu')renderRecordArchive();window.scrollTo({top:0,behavior:'smooth'});}
-  function openEvent(){ $('eventDate').value=selectedDate||dateKey(today);$('eventForm').reset();$('eventDate').value=selectedDate||dateKey(today);$('eventModal').classList.add('open');setTimeout(()=>$('eventName').focus(),100);}
+  function openEvent(){ $('eventDate').value=selectedDate||dateKey(today);$('eventForm').reset();$('eventHour').value='';$('eventMinute').value='';$('eventDate').value=selectedDate||dateKey(today);$('eventModal').classList.add('open');setTimeout(()=>$('eventName').focus(),100);}
   function closeEvent(){$('eventModal').classList.remove('open');}
   function info(title,body){$('infoTitle').textContent=title;$('infoBody').innerHTML=body;$('infoModal').classList.add('open');}
   $('loginForm').addEventListener('submit',async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);}catch(err){console.error(err);info('로그인 실패',authError(err));}});
@@ -244,13 +248,23 @@ let cloudReady = false;
   $('resetPassword').addEventListener('click',async()=>{const email=$('email').value.trim()||prompt('비밀번호 재설정 링크를 받을 가입 이메일을 입력하세요.');if(!email)return;try{await sendPasswordResetEmail(auth,email.trim());info('재설정 이메일 발송 요청 완료','해당 이메일 주소의 받은편지함과 스팸함을 확인하세요. Firebase에서 이메일 발송 설정이 완료되어 있어야 합니다.');}catch(err){console.error(err);info('재설정 요청 실패',authError(err));}});
   $('showSetup').addEventListener('click',()=>info('Firebase 연결 상태','이 화면은 Firebase Authentication과 Cloud Firestore를 사용합니다. 일정과 일기 텍스트는 로그인한 계정별로 저장됩니다. 현재 Storage는 요금제 확인이 필요해 첨부파일은 이 브라우저에만 저장됩니다.'));
   function authError(err){const m=err?.code||'';return ({'auth/invalid-credential':'이메일 또는 비밀번호가 올바르지 않습니다.','auth/email-already-in-use':'이미 가입된 이메일입니다. 로그인해 주세요.','auth/weak-password':'비밀번호는 6자 이상이어야 합니다.','auth/invalid-email':'이메일 형식이 올바르지 않습니다.','auth/operation-not-allowed':'Firebase Authentication에서 이메일/비밀번호 로그인을 켜야 합니다.','auth/network-request-failed':'인터넷 연결을 확인해 주세요.','auth/wrong-password':'비밀번호가 올바르지 않습니다.','auth/too-many-requests':'시도 횟수가 많습니다. 잠시 후 다시 시도해 주세요.'})[m]||('오류 코드: '+(m||'알 수 없는 오류'));}
-  authPersistenceReady.then(()=>{onAuthStateChanged(auth,user=>{if(user){loadCloudData(user);}else{activeUser=null;cloudReady=false;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');}});}).catch(err=>{console.error('Auth persistence setup failed',err);info('로그인 유지 설정 오류','브라우저의 쿠키/사이트 데이터 설정을 확인해 주세요. 일반 창에서 다시 시도해 주세요.');});
+  async function refreshRecordCalendar(user){
+    try{
+      const all=[];
+      for(const [kind,coll] of [['medication','medications'],['vehicle','vehicles']]){
+        const snap=await getDocs(collection(db,'users',user.uid,coll));
+        snap.forEach(d=>{const x=d.data()||{},date=x.startDate||x.date||'';if(!date)return;const unit=x.durationUnit||'day',count=Math.max(1,Math.min(120,Number(x.durationCount)||1));const end=parseDate(date);if(unit==='month'){const day=end.getDate();end.setDate(1);end.setMonth(end.getMonth()+count);end.setDate(Math.min(day,new Date(end.getFullYear(),end.getMonth()+1,0).getDate()));}else end.setDate(end.getDate()+count);end.setDate(end.getDate()-1);all.push({id:'record-'+kind+'-'+d.id,title:x.name||x.title||(kind==='medication'?'MEDICATION':'VEHICLE'),date,endDate:dateKey(end),kind,category:kind==='medication'?'투약':'차량'});});
+      }
+      window.__mldRecordCalendar=all;renderAll();
+    }catch(err){console.error('기록 캘린더 반영 실패',err);}
+  }
+  authPersistenceReady.then(()=>{onAuthStateChanged(auth,user=>{if(user){loadCloudData(user);refreshRecordCalendar(user);}else{activeUser=null;cloudReady=false;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');}});}).catch(err=>{console.error('Auth persistence setup failed',err);info('로그인 유지 설정 오류','브라우저의 쿠키/사이트 데이터 설정을 확인해 주세요. 일반 창에서 다시 시도해 주세요.');});
   document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
   document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.action==='new-event')openEvent();}));
   $('todayAddButton').addEventListener('click',()=>info('추가할 기록 선택',`<div class="stack"><button type="button" class="btn full" data-add-kind="event">일정</button><button type="button" class="btn full" data-add-kind="diary">다이어리</button><button type="button" class="btn full" data-add-kind="medication">투약</button><button type="button" class="btn full" data-add-kind="vehicle">차량관리</button></div>`));
   $('infoBody').addEventListener('click',e=>{const b=e.target.closest('[data-add-kind]');if(!b)return;$('infoModal').classList.remove('open');if(b.dataset.addKind==='event'){openEvent();return;}openRecordForm(b.dataset.addKind);});
   document.querySelectorAll('[data-archive-category]').forEach(b=>b.addEventListener('click',()=>{archiveCategory=b.dataset.archiveCategory;document.querySelectorAll('[data-archive-category]').forEach(x=>x.classList.toggle('active',x===b));renderRecordArchive();}));
-  $('eventForm').addEventListener('submit',e=>{e.preventDefault();const date=$('eventDate').value,unit=$('eventDurationUnit').value,count=Math.max(1,Math.min(120,Number($('eventDurationCount').value)||1));const end=parseDate(date);if(unit==='month'){const day=end.getDate();end.setDate(1);end.setMonth(end.getMonth()+count);end.setDate(Math.min(day,new Date(end.getFullYear(),end.getMonth()+1,0).getDate()));}else end.setDate(end.getDate()+count);end.setDate(end.getDate()-1);events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date,endDate:dateKey(end),durationUnit:unit,durationCount:count,time:$('eventTime').value,category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=date;saveEvents();closeEvent();showScreen('calendar');});
+  $('eventForm').addEventListener('submit',e=>{e.preventDefault();const date=$('eventDate').value,unit=$('eventDurationUnit').value,count=Math.max(1,Math.min(120,Number($('eventDurationCount').value)||1));const end=parseDate(date);if(unit==='month'){const day=end.getDate();end.setDate(1);end.setMonth(end.getMonth()+count);end.setDate(Math.min(day,new Date(end.getFullYear(),end.getMonth()+1,0).getDate()));}else end.setDate(end.getDate()+count);end.setDate(end.getDate()-1);events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),title:$('eventName').value.trim(),date,endDate:dateKey(end),durationUnit:unit,durationCount:count,time:($('eventHour').value!==''&&$('eventMinute').value!==''?$('eventHour').value+':'+$('eventMinute').value:''),category:$('eventCategory').value,repeat:$('eventRepeat').value,notes:$('eventNotes').value.trim()});selectedDate=date;saveEvents();closeEvent();showScreen('calendar');});
   $('closeModal').addEventListener('click',closeEvent);$('eventModal').addEventListener('click',e=>{if(e.target===$('eventModal'))closeEvent();});
   $('prevMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()-1,1);renderCalendar();});
   $('nextMonth').addEventListener('click',()=>{monthDate=new Date(monthDate.getFullYear(),monthDate.getMonth()+1,1);renderCalendar();});
@@ -290,7 +304,7 @@ let cloudReady = false;
   function showRecordDetails(r){
     currentRecord=r;const attachments=r.raw.attachments||loadAttachments(r.attachmentKey)||[];
     const fileHtml=attachments.map(a=>`<div class="event"><div class="grow"><strong>${esc(a.name||'File')}</strong><small>${esc(a.type||'File')}</small>${a.type?.startsWith('image/')&&a.data?`<img src="${a.data}" alt="${esc(a.name)}" style="max-width:100%;max-height:180px;display:block;margin-top:8px;border-radius:10px">`:''}</div>${a.data?`<a class="btn ghost" download="${esc(a.name||'file')}" href="${a.data}" style="text-decoration:none">OPEN</a>`:''}</div>`).join('');
-    info(archiveNames[r.kind]+' DETAILS',`<div><b>${esc(r.title)}</b></div><div style="color:var(--muted);margin:8px 0">${esc(r.date)} · ${esc(archiveNames[r.kind])}</div><div style="white-space:pre-wrap">${esc(r.detail||'')}</div>${fileHtml?'<h3>FILES</h3>'+fileHtml:''}<div class="record-actions"><button type="button" class="btn secondary" id="editArchiveRecord">수정</button><button type="button" class="btn" style="background:var(--red)" id="deleteArchiveRecord">삭제</button></div>`);
+    info(archiveNames[r.kind]+' DETAILS',`<div><b>${esc(r.title)}</b></div><div style="color:var(--muted);margin:8px 0">${esc(r.date)} · ${esc(archiveNames[r.kind])}</div><div style="white-space:pre-wrap">${esc(r.detail||'')}</div>${fileHtml?'<h3>FILES</h3>'+fileHtml:''}<div class="record-actions"><button type="button" class="btn secondary" id="editArchiveRecord">EDIT</button><button type="button" class="btn" style="background:var(--red)" id="deleteArchiveRecord">DELETE</button></div>`);
     $('editArchiveRecord').addEventListener('click',()=>{$('infoModal').classList.remove('open');openRecordForm(r.kind,r);});
     $('deleteArchiveRecord').addEventListener('click',async()=>{if(!confirm('이 기록을 삭제할까요? 삭제 후에는 복구할 수 없습니다.'))return;await deleteArchiveRecord(r);});
   }
@@ -307,6 +321,7 @@ let cloudReady = false;
     $('recordForm').reset();$('recordKind').value=kind;$('recordId').value=r?.id||'';$('recordOriginalDate').value=r?.date||'';
     $('recordModalTitle').textContent=(r?'기록 수정 · ':'기록 추가 · ')+(archiveNames[kind]||kind).toUpperCase();
     $('recordTitle').value=r?.title||'';$('recordDate').value=r?.date||dateKey(today);$('recordBody').value=r?.detail||'';
+    $('recordDurationField').classList.toggle('hidden',kind==='diary');$('recordDurationUnit').value=r?.raw?.durationUnit||'day';$('recordDurationCount').value=r?.raw?.durationCount||1;
     $('medicationFields').classList.toggle('hidden',kind!=='medication');$('recordBodyField').classList.toggle('hidden',kind==='medication');
     $('recordEffect').value=r?.raw?.effect||'';$('recordHow').value=r?.raw?.how||'';$('recordSchedule').value=r?.raw?.schedule||'';
     const key=r?.attachmentKey||recordAttachmentKey(kind,$('recordId').value||('new-'+Date.now()),$('recordDate').value);
@@ -322,14 +337,14 @@ let cloudReady = false;
     e.preventDefault();if(!activeUser)return;
     const kind=$('recordKind').value,id=$('recordId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())),date=$('recordDate').value,updatedAt=new Date().toISOString();
     const title=$('recordTitle').value.trim();if(!title||!date){info('필수 항목 확인','제목과 날짜를 입력해 주세요.');return;}
-    let payload={updatedAt};if(kind==='diary'){payload={title,text:$('recordBody').value.trim(),updatedAt};}else if(kind==='medication'){payload={name:title,effect:$('recordEffect').value.trim(),how:$('recordHow').value.trim(),schedule:$('recordSchedule').value.trim(),startDate:date,updatedAt};}else{payload={title,date,details:$('recordBody').value.trim(),updatedAt};}
+    let payload={updatedAt};if(kind==='diary'){payload={title,text:$('recordBody').value.trim(),updatedAt};}else if(kind==='medication'){payload={name:title,effect:$('recordEffect').value.trim(),how:$('recordHow').value.trim(),schedule:$('recordSchedule').value.trim(),startDate:date,date,durationUnit:$('recordDurationUnit').value,durationCount:Math.max(1,Math.min(120,Number($('recordDurationCount').value)||1)),updatedAt};}else{payload={title,date,details:$('recordBody').value.trim(),durationUnit:$('recordDurationUnit').value,durationCount:Math.max(1,Math.min(120,Number($('recordDurationCount').value)||1)),updatedAt};}
     try{
       const collectionName=kind==='diary'?'diary':kind==='medication'?'medications':'vehicles';const docId=kind==='diary'?date:id;
       await setDoc(doc(db,'users',activeUser.uid,collectionName,docId),payload,{merge:true});
       if(kind==='diary'){diaryCache[date]={...(diaryCache[date]||{}),...payload};try{const old=JSON.parse(localStorage.getItem(diaryKey(date))||'{}');localStorage.setItem(diaryKey(date),JSON.stringify({...old,text:payload.text,attachments:currentRecordAttachments}));}catch{}}
       else {const nextKey=recordAttachmentKey(kind,docId,date),priorKey=$('recordForm').dataset.attachmentKey;saveAttachments(nextKey,currentRecordAttachments);if($('recordId').value&&priorKey&&priorKey!==nextKey)localStorage.removeItem(priorKey);}
       if(kind==='diary'&&$('recordOriginalDate').value&&$('recordOriginalDate').value!==date){await deleteDoc(doc(db,'users',activeUser.uid,'diary',$('recordOriginalDate').value));localStorage.removeItem(diaryKey($('recordOriginalDate').value));delete diaryCache[$('recordOriginalDate').value];}
-      $('recordModal').classList.remove('open');await renderRecordArchive();renderAll();info('저장 완료','기록을 저장했습니다.');
+      $('recordModal').classList.remove('open');await renderRecordArchive();await refreshRecordCalendar(activeUser);renderAll();info('저장 완료','기록을 저장했습니다.');
     }catch(err){console.error(err);info('저장 실패','기록을 저장하지 못했습니다. 인터넷 연결과 Firestore 보안 규칙을 확인해 주세요.');}
   });
   $('refreshArchive')?.addEventListener('click',renderRecordArchive);
@@ -350,7 +365,7 @@ let cloudReady = false;
     const host=$('medicationsList');if(!activeUser){host.innerHTML='<div class="empty">로그인 후 약 정보를 확인할 수 있습니다.</div>';return;}
     host.innerHTML='<div class="empty">불러오는 중…</div>';
     try{const snap=await getDocs(collection(db,'users',activeUser.uid,'medications'));const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));rows.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
-      host.innerHTML=rows.length?rows.map(m=>`<div class="event"><div class="iconbox" style="background:#E4EEE8;color:#0B3D2E">💊</div><div class="grow"><strong>${esc(m.name||'이름 미입력')}</strong><small>${esc(m.effect||'효능 미입력')}<br>복용법: ${esc(m.how||'미입력')}<br>일정: ${esc(m.schedule||'미입력')}${m.startDate?' · 시작일 '+esc(m.startDate):''}</small></div><button class="btn ghost" data-delete-med="${esc(m.id)}">삭제</button></div>`).join(''):'<div class="empty">저장된 약 정보가 없습니다.</div>';
+      host.innerHTML=rows.length?rows.map(m=>`<div class="event"><div class="iconbox" style="background:#E4EEE8;color:#0B3D2E">💊</div><div class="grow"><strong>${esc(m.name||'이름 미입력')}</strong><small>${esc(m.effect||'효능 미입력')}<br>복용법: ${esc(m.how||'미입력')}<br>일정: ${esc(m.schedule||'미입력')}${m.startDate?' · 시작일 '+esc(m.startDate):''}</small></div><button class="btn ghost" data-delete-med="${esc(m.id)}">DELETE</button></div>`).join(''):'<div class="empty">저장된 약 정보가 없습니다.</div>';
     }catch(err){console.error(err);host.innerHTML='<div class="empty">약 정보를 불러오지 못했습니다. Firestore 보안 규칙을 확인해 주세요.</div>';}
   }
   $('saveMedicine').addEventListener('click',async()=>{
