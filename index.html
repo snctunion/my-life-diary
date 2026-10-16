@@ -294,8 +294,31 @@ let cloudReady = false;
     const e=events.find(x=>x.id===id);if(!e)return;const done=(e.completedDates||[]).includes(day);
     info('일정 상세',`<div class="section-head"><strong>${esc(e.title||'제목 없음')}</strong><span class="pill">${esc(e.category||'개인')}</span></div><div class="sub" style="margin-top:8px">날짜: ${esc(e.date||'날짜 없음')}${e.endDate&&e.endDate!==e.date?' ~ '+esc(e.endDate):''}${e.time?' · 시간: '+esc(e.time):''}</div><div class="detail-notes">${esc(e.notes||'추가 메모가 없습니다.')}</div>${e.repeat&&e.repeat!=='none'?`<div class="sub">반복: ${esc(repeatName(e.repeat))}</div>`:''}<label style="display:flex;align-items:center;gap:10px;margin-top:16px"><input class="event-check" type="checkbox" data-toggle-event-done="${esc(e.id)}" data-done-date="${esc(day)}" ${done?'checked':''}> 수행 완료</label><div class="row" style="gap:8px;margin-top:16px"><button type="button" class="btn secondary grow" data-edit-event="${esc(e.id)}">수정</button><button type="button" class="btn ghost grow" data-delete-event-detail="${esc(e.id)}">삭제</button></div>`);
   }
-  async function toggleDone(kind,id,day,checked){if(!activeUser){info('로그인이 필요합니다','완료 상태를 저장하려면 로그인해 주세요.');return;}try{if(kind==='event'){const idx=events.findIndex(x=>x.id===id);if(idx<0)return;const set=new Set(events[idx].completedDates||[]);checked?set.add(day):set.delete(day);events[idx]={...events[idx],completedDates:[...set]};await saveEvents();}else{const r=records.find(x=>x.id===id);if(!r)return;const set=new Set(r.completedDates||[]);checked?set.add(day):set.delete(day);const updated={...r,completedDates:[...set],updatedAt:new Date().toISOString()};await setDoc(doc(db,'users',activeUser.uid,'records',id),updated);records=records.map(x=>x.id===id?{id,...updated}:x);rebuildRecordEvents();renderAll();}}catch(err){console.error(err);info('저장 실패','수행 완료 상태를 저장하지 못했습니다.');}}
-  document.addEventListener('change',e=>{const b=e.target.closest('[data-toggle-event-done]');if(b){e.stopPropagation();toggleDone('event',b.dataset.toggleEventDone,b.dataset.doneDate,b.checked);return;}const r=e.target.closest('[data-toggle-record-done]');if(r){e.stopPropagation();toggleDone('record',r.dataset.toggleRecordDone,r.dataset.doneDate,r.checked);}});
+  async function toggleDone(kind,id,day,checked){
+    if(!activeUser){info('로그인이 필요합니다','완료 상태를 저장하려면 로그인해 주세요.');renderAll();return;}
+    try{
+      if(kind==='event'){
+        const idx=events.findIndex(x=>x.id===id);if(idx<0)return;
+        const set=new Set(Array.isArray(events[idx].completedDates)?events[idx].completedDates:[]);
+        if(checked)set.add(day);else set.delete(day);
+        events[idx]={...events[idx],completedDates:[...set]};
+        await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});
+      }else{
+        const r=records.find(x=>x.id===id);if(!r)return;
+        const set=new Set(Array.isArray(r.completedDates)?r.completedDates:[]);
+        if(checked)set.add(day);else set.delete(day);
+        const updated={...r,completedDates:[...set],updatedAt:new Date().toISOString()};
+        await setDoc(doc(db,'users',activeUser.uid,'records',id),updated);
+        records=records.map(x=>x.id===id?updated:x);
+        rebuildRecordEvents();
+      }
+      // 서버 저장이 성공한 뒤 목록을 다시 그려 체크 상태를 유지한다.
+      renderAll();
+    }catch(err){console.error(err);info('저장 실패','수행 완료 상태를 저장하지 못했습니다. 인터넷 연결과 Firestore 규칙을 확인해 주세요.');renderAll();}
+  }
+  // 체크박스 조작이 바깥 일정 행의 상세 팝업을 열지 않도록 클릭 전파를 차단한다.
+  document.addEventListener('click',e=>{if(e.target instanceof HTMLInputElement&&e.target.matches('[data-toggle-event-done],[data-toggle-record-done]'))e.stopPropagation();},true);
+  document.addEventListener('change',e=>{const b=e.target.closest('[data-toggle-event-done]');if(b){e.stopPropagation();void toggleDone('event',b.dataset.toggleEventDone,b.dataset.doneDate,b.checked);return;}const r=e.target.closest('[data-toggle-record-done]');if(r){e.stopPropagation();void toggleDone('record',r.dataset.toggleRecordDone,r.dataset.doneDate,r.checked);}});
   document.addEventListener('click',e=>{
     if(e.target.closest('[data-toggle-event-done],[data-toggle-record-done]')){e.stopPropagation();return;}
     const editEvent=e.target.closest('[data-edit-event]');if(editEvent){$('infoModal').classList.remove('open');openEvent(editEvent.dataset.editEvent);return;}
