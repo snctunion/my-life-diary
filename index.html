@@ -14,7 +14,7 @@
     button,input,textarea,select{font:inherit} button{cursor:pointer;touch-action:manipulation}
     .app{max-width:1100px;margin:0 auto;min-height:100dvh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
     .top{background:var(--purple);color:white;padding:calc(18px + env(safe-area-inset-top)) 18px 22px;border-radius:0 0 26px 26px}
-    .topline{display:flex;align-items:center;justify-content:space-between;gap:12px}.top-action{padding:8px 10px;min-height:44px;font-size:11px;line-height:1.25;white-space:nowrap}.brand{font-size:12px;letter-spacing:2px;opacity:.92;color:#E1D2A8}.top h1{font-size:26px;line-height:1.2;margin:8px 0}.today-date{opacity:.9;font-size:14px}.avatar{border:1px solid #ffffff70;border-radius:50%;width:42px;height:42px;background:#ffffff1c;color:white}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:12px}.account-controls{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}.login-account-info{max-width:100%;font-size:11px;line-height:1.3;text-align:right;overflow-wrap:anywhere;color:#fff;opacity:.9}.account-buttons{display:flex;gap:8px;align-items:center;flex-shrink:0}.top-action{padding:8px 10px;min-height:44px;font-size:11px;line-height:1.25;white-space:nowrap}.brand{font-size:12px;letter-spacing:2px;opacity:.92;color:#E1D2A8}.top h1{font-size:26px;line-height:1.2;margin:8px 0}.today-date{opacity:.9;font-size:14px}.avatar{border:1px solid #ffffff70;border-radius:50%;width:42px;height:42px;background:#ffffff1c;color:white}
     main{padding:16px;display:grid;gap:16px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.section-head h2{font-size:18px;margin:0}.sub{font-size:13px;color:var(--muted)}
     .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}.stack{display:grid;gap:10px}.row{display:flex;align-items:center;gap:12px}.grow{flex:1;min-width:0}
     .iconbox{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--purple2);font-size:18px;font-weight:500;flex-shrink:0}.event{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.event:last-child{border-bottom:0;padding-bottom:0}.event strong{display:block;font-size:15px}.event small{display:block;color:var(--muted);margin-top:4px;font-size:13px}.empty{padding:18px 8px;text-align:center;color:var(--muted);font-size:14px}
@@ -47,7 +47,7 @@
   </section>
   <div id="app" class="app hidden">
     <header class="top">
-      <div class="topline"><div><div class="brand">MLD</div><h1 id="greeting">MLD</h1><div id="todayDate" class="today-date"></div></div><div style="display:flex;gap:8px;align-items:center;flex-shrink:0"><button id="accountSettings" class="btn secondary top-action" type="button">ACCOUNT<br>SETTINGS</button><button id="logout" class="btn top-action" type="button" style="background:#ffffff1c;border:1px solid #ffffff70;box-shadow:none">LOG<br>OUT</button></div></div>
+      <div class="topline"><div><div class="brand">MY LIFE DIARY</div><h1 id="greeting">MLD</h1><div id="todayDate" class="today-date"></div></div><div class="account-controls"><div id="loginAccountInfo" class="login-account-info"></div><div class="account-buttons"><button id="accountSettings" class="btn secondary top-action" type="button">ACCOUNT<br>SETTINGS</button><button id="logout" class="btn top-action" type="button" style="background:#ffffff1c;border:1px solid #ffffff70;box-shadow:none">LOG<br>OUT</button></div></div></div>
     </header>
     <main>
       <section id="homeScreen" class="screen active">
@@ -74,7 +74,7 @@
         <div class="card" style="margin-top:16px"><div class="section-head"><h2 id="selectedTitle">선택한 날짜</h2><button class="btn secondary" data-action="new-event">＋ 추가</button></div><div id="selectedEvents" class="stack"></div></div>
       </section>
       <section id="medsScreen" class="screen"><div class="card">          <h3>약 정보 정리</h3>
-          <p class="sub">인식된 글자를 참고해 아래 항목을 확인하고 입력하세요. 효능과 복용법은 처방전·약 봉투·약사 안내를 기준으로 확인해야 합니다.</p>
+          <p class="sub">약 정보를 입력하세요. 효능과 복용법은 처방전·약 봉투·약사 안내를 기준으로 확인해야 합니다.</p>
           <div class="field"><label for="medicineName">약 이름</label><input id="medicineName" placeholder="약 이름을 입력하세요"></div>
           <div class="field"><label for="medicineEffect">효능·용도 (확인한 내용)</label><textarea id="medicineEffect" placeholder="약 봉투 또는 약사 안내에서 확인한 효능"></textarea></div>
           <div class="field"><label for="medicineHow">복용법·용량</label><textarea id="medicineHow" placeholder="예: 1회 1정, 식후 복용 (처방 지시를 확인)"></textarea></div>
@@ -145,7 +145,7 @@ let cloudReady = false;
   let selectedDate = dateKey(today), monthDate = new Date(today.getFullYear(),today.getMonth(),1), events = [], currentScreen='home';
   const diaryKey = d => 'mylife.diary.'+d;
   async function saveEvents(){if(!activeUser){info('로그인이 필요합니다','먼저 Firebase 계정으로 로그인해 주세요.');return;}try{await setDoc(doc(db,'users',activeUser.uid,'app','events'),{items:events,updatedAt:new Date().toISOString()});renderAll();}catch(err){console.error(err);info('저장 실패','일정을 온라인에 저장하지 못했습니다. Firestore 보안 규칙과 인터넷 연결을 확인해 주세요.');}}
-  async function loadCloudData(user){activeUser=user;events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderMedicines();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
+  async function loadCloudData(user){activeUser=user;const accountInfo=$('loginAccountInfo');if(accountInfo)accountInfo.textContent=user.email||'로그인 계정';events=[];diaryCache={};cloudReady=false;try{const ev=await getDoc(doc(db,'users',user.uid,'app','events'));if(ev.exists())events=Array.isArray(ev.data().items)?ev.data().items:[];const ds=await getDocs(collection(db,'users',user.uid,'diary'));ds.forEach(d=>diaryCache[d.id]=d.data());cloudReady=true;pendingDiaryAttachments=[];renderAll();$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');renderMedicines();}catch(err){console.error(err);info('온라인 저장 연결 오류','로그인은 되었지만 데이터를 불러오지 못했습니다. Firestore 규칙이 게시되었는지 확인해 주세요.');}}
   function occurrences(e, start, end){
     const out=[]; const from=parseDate(start), to=parseDate(end), base=parseDate(e.date);
     if(e.repeat==='none'||!e.repeat){if(base>=from&&base<=to)out.push({...e,occurrence:dateKey(base)});return out;}
@@ -194,7 +194,7 @@ let cloudReady = false;
       if(action==='1'){
         const nextEmail=prompt('새 이메일 주소를 입력하세요.',user.email);if(nextEmail===null)return;
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail.trim())){info('이메일 확인','올바른 이메일 주소를 입력해 주세요.');return;}
-        await updateEmail(user,nextEmail.trim());info('이메일 변경 완료','로그인 이메일이 변경되었습니다. 다음 로그인부터 새 이메일을 사용하세요.');
+        await updateEmail(user,nextEmail.trim());const accountInfo=$('loginAccountInfo');if(accountInfo)accountInfo.textContent=user.email||nextEmail.trim();info('이메일 변경 완료','로그인 이메일이 변경되었습니다. 다음 로그인부터 새 이메일을 사용하세요.');
       }else{
         const nextPassword=prompt('새 비밀번호를 입력하세요. (6자 이상)');if(nextPassword===null)return;
         if(nextPassword.length<6){info('비밀번호 확인','비밀번호는 6자 이상이어야 합니다.');return;}
@@ -245,7 +245,7 @@ let cloudReady = false;
   }
   $('saveMedicine').addEventListener('click',async()=>{
     if(!activeUser){info('로그인이 필요합니다','약 정보를 온라인에 저장하려면 먼저 로그인해 주세요.');return;}
-    const name=$('medicineName').value.trim();if(!name){info('약 이름을 입력해 주세요','OCR 결과를 확인하고 약 이름을 입력해 주세요.');return;}
+    const name=$('medicineName').value.trim();if(!name){info('약 이름을 입력해 주세요','약 이름을 입력한 뒤 저장해 주세요.');return;}
     const id=crypto.randomUUID?crypto.randomUUID():String(Date.now());
     const item={name,effect:$('medicineEffect').value.trim(),how:$('medicineHow').value.trim(),schedule:$('medicineSchedule').value.trim(),startDate:$('medicineDate').value,updatedAt:new Date().toISOString()};
     try{await setDoc(doc(db,'users',activeUser.uid,'medications',id),item);info('저장 완료','약 정보가 계정에 저장되었습니다. 효능과 복용법은 원본 처방 지시와 대조해 주세요.');await renderMedicines();}
